@@ -1,0 +1,89 @@
+# R específico
+.Rproj.user/
+.Rhistory
+.RData
+.Ruserdata
+*.Rproj
+
+# R temporales
+*.rds
+*.RDS
+
+# Archivos de sesión R
+.httr-oauth
+.DS_Store
+.directory
+
+# RStudio específico
+.Rproj.user
+rsconnect/
+
+# Shiny específico
+shiny_bookmarks/
+*.sqlite
+*.db
+logs/
+log/
+
+# Datos sensibles
+config.yml
+.env
+.Renviron
+credentials/
+keys/
+secrets/
+
+# Cache y temporales
+cache/
+tmp/
+temp/
+*.tmp
+*.cache
+
+# Plots y outputs generados
+plots/
+outputs/
+results/
+*.png
+*.pdf
+*.jpg
+*.jpeg
+*.gif
+*.svg
+
+# Archivos de datos grandes (opcional - descomenta si necesitas)
+# data/
+# *.csv
+# *.xlsx
+# *.json
+# *.rdata
+
+# Packrat específico (si usas packrat)
+packrat/lib*/
+packrat/src/
+
+# renv específico (si usas renv)
+renv/library/
+renv/python/
+renv/staging/
+
+# Archivos del sistema
+Thumbs.db
+.DS_Store
+*.swp
+*.swo
+*~
+
+# IDEs
+.vscode/
+.idea/
+
+# Logs de aplicación
+*.log
+shiny-server.log
+app.log
+
+# Archivos de despliegue
+deployment/
+deploy/
+.secrets
