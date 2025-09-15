@@ -5,9 +5,8 @@ credentials <- readxl::read_excel("www/data/contrasenas_nl.xlsx")
 
 function(input, output, session) {
 
-  #----------------------------------------------------------------
   # 2.1. AUTENTICACIÓN Y GESTIÓN DE USUARIO
-  #----------------------------------------------------------------
+
   
   # secure_server: Inicia el módulo de autenticación de shinymanager.
   # check_credentials: Valida las credenciales introducidas por el usuario
@@ -37,9 +36,9 @@ function(input, output, session) {
   })
   
   
-  #----------------------------------------------------------------
+
   # 2.2. REACTIVOS DE DATOS PRIMARIOS (FILTRADO INICIAL)
-  #----------------------------------------------------------------
+
   
   # Actualizar tipo_filtro_inicial en fincion del rol.
   observeEvent(get_user_role(), {
@@ -141,9 +140,10 @@ function(input, output, session) {
   })
   
   
-  #----------------------------------------------------------------
+  ##########################################################
   # 2.3. REACTIVOS DE DATOS DERIVADOS
-  #----------------------------------------------------------------
+  ##########################################################
+  
   # Estos reactivos dependen del dataframe 'secciones()' ya filtrado.
   # Realizan uniones (joins) para enriquecer los datos de las secciones
   # con información adicional.
@@ -176,10 +176,9 @@ function(input, output, session) {
   })
   
   
-  #----------------------------------------------------------------
-  # 2.4. RENDERIZACIÓN DE ELEMENTOS DE UI (USER INTERFACE)
-  #----------------------------------------------------------------
   
+  # 2.4. RENDERIZACIÓN DE ELEMENTOS DE UI (USER INTERFACE)
+
   # Crea un selector de colonias dinámicamente.
   # Las opciones de este selector dependen de las secciones que han sido
   # filtradas previamente por el rol y los filtros iniciales.
@@ -202,54 +201,123 @@ function(input, output, session) {
   })
   
   
-  # ============================================================================================
-  # Visualizador Histórico-Electoral ----
-  # ============================================================================================
-  
-  base_ganador_1 <- reactive({
-    
+  # Comparativo Resultados Históricos ----
 
-    selected_ganador <- choice_mapping[input$eleccion_1]
+  rank_por_seccion_eleccion <- reactive({
+    x = cant_votos_nl %>%
+      # Agrupar por sección y elección para analizar cada una por separado
+      group_by(seccion, eleccion_año_id) %>%
+      # Asegurarse de que los datos estén ordenados de mayor a menor número de votos
+      arrange(desc(votos)) %>%
+      # Usar mutate para añadir columnas sin colapsar el data frame todavía
+      mutate(
+        # Calcular el total de votos para la sección
+        votos_totales_seccion = sum(votos, na.rm = T),
+        # Asignar un ranking a cada partido dentro de su sección
+        lugar = row_number()
+      ) %>%
+      # Filtrar para quedarnos solo con el 1er y 2do lugar
+      filter(lugar %in% c(1, 2)) %>%
+      # Seleccionar las columnas que nos interesan
+      select(seccion, eleccion_año_id, votos_totales_seccion, partido, votos, lugar) %>%
+      # Reorganizar la tabla para que el 1er y 2do lugar queden en columnas separadas
+      pivot_wider(
+        names_from = lugar,
+        values_from = c(partido, votos),
+        names_sep = "_"
+      ) %>%
+      # Desagrupar para futuras operaciones
+      ungroup()
     
-    # Check if the provided choice is present in mapping
-    if(!is.null(selected_ganador)) {
-      base <- base_ganadores_pr() %>% select(SECCION, ganador = !! sym(selected_ganador), poblacion)
-    } else {
-      base <- NULL 
-    }
-    base 
+    return(x)
   })
+  
+  
+  ### Primer Mapa
+  base_ganador_1 <- reactive({
+    # input$eleccion_1
+    
+    req(input$eleccion_1)
+
+    dta <- rank_por_seccion_eleccion()
+    dta_filtrada <- dta %>%
+      filter(
+        eleccion_año_id == input$eleccion_1
+      )
+    
+    return(dta_filtrada)
+  })
+  
   output$mapa_ganador_1 <- renderLeaflet({
     
-    base_mapa <- base_ganador_1()
-    base_mapa <- st_transform(base_mapa, crs = "+proj=longlat +datum=WGS84")
+    dta <- base_ganador_1()
+    
+    req(nrow(dta) > 0)
+    
+    dta_popup <- dta 
 
     validate(
-      need(nrow(base_mapa) > 0, 
+      need(nrow(dta_popup) > 0, 
            "Con los permisos contratados, no tienes acceso a este municipio/distrito, cambia el filtro al inicio de la App. 
              Si consideras que esto es incorrecto o se trata de algún otro error, por favor contacta a tu proveedor.")
     )
     
-    base_mapa$ganador <- factor(base_mapa$ganador, levels = c("MC", "PAN", "PRI", "morena", "INDEPE", "VERDE", "PT", "otro", "PVEM"))
+    dta_popup$partido_1 <- factor(dta_popup$partido_1, levels = c("MC", "PAN", "PRI", "morena", "INDEPE", "VERDE", "PT", "otro", "PVEM"))
     
     
-    pal <- colorFactor(c("orange","blue", "red", "brown", "purple", "#6CB655", "#E7DE08", "black", "#6CB655"), domain = base_mapa$ganador)
+    pal <- colorFactor(c("orange","blue", "red", "brown", "purple", "#6CB655", "#E7DE08", "black", "#6CB655"), domain = dta_popup$partido_1)
     
     
-    popup = paste0("Seccion: ",
-                   base_mapa$SECCION, ". \n Ganador:",
-                   base_mapa$ganador, ". <br/> Poblacion: ", comma(base_mapa$poblacion))
+    nombre_1a <- paste0("Resultados: ", input$eleccion_1)
     
-    nombre_1a <- paste0("Resultados por sección en la elección de ", input$eleccion_1)
+    shp_dta_popup <- secciones() %>%
+      left_join(dta_popup, by = c("SECCION" = "seccion")) %>%
+      st_transform(crs = "+proj=longlat +datum=WGS84") %>%
+      # Usar mutate para añadir las nuevas columnas de cálculo y el popup
+      mutate(
+        # --- Cálculos ---
+        # Porcentaje de votos que obtuvo el ganador sobre el total de la sección
+        porc_votos_ganador = (votos_1 / votos_totales_seccion) * 100,
+        
+        # Diferencia de votos entre el primer y segundo lugar
+        distancia_votos_2do = votos_1 - votos_2,
+        porc_distancia = (distancia_votos_2do / votos_totales_seccion) * 100,
+        
+        # Porcentaje de participación
+        porc_participacion = (votos_totales_seccion/pobtotal)*100,
+        
+        # --- Creación del Popup con formato HTML ---
+        popup_html = paste0(
+          "<b>Sección: </b>", htmlEscape(SECCION), "<br>",
+          "<b>Elección: </b>", htmlEscape(eleccion_año_id), "<hr style='margin:0.5rem;'>",
+          
+          "<b>Población: </b>",format(round(pobtotal,0), big.mark = ","),"<br>",
+          "<b>Votos Totales: </b>", format(round(votos_totales_seccion,0), big.mark = ","), "<br>",
+          "<b>% Participación: </b>", round(porc_participacion,2), "%<hr style='margin:0.5rem;'>",
+          
+          "<b>Ganador: </b>", htmlEscape(partido_1), "<br>",
+          "<b>Votos Ganador: </b>",format(round(votos_1, 0), big.mark = ","), "<br>",
+          "<b>% Voto Ganador: </b>", round(porc_votos_ganador, 2), "%<hr style='margin:0.5rem;'>",
+          
+          "<b>Ventaja sobre 2do lugar: </b>", format(distancia_votos_2do, big.mark = ","), " votos", " (",round(porc_distancia, 2),"%)"
+        )
+      )
     
     
     mapa <- leaflet() %>% 
       addProviderTiles(providers$CartoDB.Voyager) %>% 
-      addLegend(pal = pal, values =base_mapa$ganador, labels = c("No", "Sí"), title = "¿Ganador de la sección?") %>% 
+      addLegend(
+        position = "bottomright",
+        pal = pal, 
+        values =shp_dta_popup$partido_1, 
+        labels = c("No", "Sí"), 
+        title = "Ganador de sección") %>% 
       addPolygons(
-        data = base_mapa,
-        color = "#596475", fillColor = pal(base_mapa$ganador), 
-        popup = popup, stroke = T, fillOpacity = 0.7, weight= 1.3,
+        data = shp_dta_popup,
+        color = "#596475", 
+        stroke = T, weight= 1.3,
+        fillColor = pal(shp_dta_popup$partido_1),fillOpacity = 0.7, 
+        popup = ~ popup_html, 
         highlightOptions = highlightOptions(
           weight = 4,
           color = "#f72585",
@@ -258,9 +326,11 @@ function(input, output, session) {
         )) %>% 
       addControl(nombre_1a, position = "bottomleft", className="map-title") 
     
-    mapa
+    return(mapa)
     
   })
+  
+  
   output$downloadganador_elec1 <- downloadHandler(
     filename = function() {
       paste("my_data-", Sys.Date(), ".csv", sep="")
@@ -270,65 +340,107 @@ function(input, output, session) {
     }
   )
   
-  base_ganador_2 <- reactive({ 
+  
+  ### Segundo Mapa
+  base_ganador_2 <- reactive({
     
-    selected_ganador <- choice_mapping[input$eleccion_2]
+    # input$eleccion_2
     
-    # Check if the provided choice is present in mapping
-    if(!is.null(selected_ganador)) {
-      base <- base_ganadores_pr() %>% select(SECCION, ganador = !! sym(selected_ganador), poblacion)
-    } else {
-      base <- NULL # Default case if none of the conditions are met
-    }
-    base 
+    req(input$eleccion_2)
+    
+    dta <- rank_por_seccion_eleccion()
+    dta_filtrada <- dta %>%
+      filter(
+        eleccion_año_id == input$eleccion_2
+      )
+    
+    return(dta_filtrada)
   })
+  
+  
   output$mapa_ganador_2 <- renderLeaflet({
     
-    base_mapa_2 <- base_ganador_2()
+    dta <- base_ganador_2()
     
-    base_mapa_2 <- st_transform(base_mapa_2, crs = "+proj=longlat +datum=WGS84")
+    req(nrow(dta) > 0)
     
-    # New validation
+    dta_popup <- dta 
+    
     validate(
-      need(nrow(base_mapa_2) > 0, 
+      need(nrow(dta_popup) > 0, 
            "Con los permisos contratados, no tienes acceso a este municipio/distrito, cambia el filtro al inicio de la App. 
              Si consideras que esto es incorrecto o se trata de algún otro error, por favor contacta a tu proveedor.")
     )
     
+    dta_popup$partido_1 <- factor(dta_popup$partido_1, levels = c("MC", "PAN", "PRI", "morena", "INDEPE", "VERDE", "PT", "otro", "PVEM"))
     
     
-    base_mapa_2$ganador <- factor(base_mapa_2$ganador, levels = c("MC", "PAN", "PRI", "morena", "INDEPE", "VERDE", "PT", "otro", "PVEM"))
+    pal <- colorFactor(c("orange","blue", "red", "brown", "purple", "#6CB655", "#E7DE08", "black", "#6CB655"), domain = dta_popup$partido_1)
     
     
-    pal <- colorFactor(c("orange","blue", "red", "brown", "purple", "#6CB655", "#E7DE08", "black","#6CB655"), domain = base_mapa_2$ganador)
+    nombre_1a <- paste0("Resultados: ", input$eleccion_1)
     
-    popup = paste0("Seccion: ",base_mapa_2$SECCION, ". \n Ganador:",
-                   base_mapa_2$ganador, ". <br/> Poblacion: ", comma(base_mapa_2$poblacion))
+    shp_dta_popup <- secciones() %>%
+      left_join(dta_popup, by = c("SECCION" = "seccion")) %>%
+      st_transform(crs = "+proj=longlat +datum=WGS84") %>%
+      # Usar mutate para añadir las nuevas columnas de cálculo y el popup
+      mutate(
+        # --- Cálculos ---
+        # Porcentaje de votos que obtuvo el ganador sobre el total de la sección
+        porc_votos_ganador = (votos_1 / votos_totales_seccion) * 100,
+        
+        # Diferencia de votos entre el primer y segundo lugar
+        distancia_votos_2do = votos_1 - votos_2,
+        porc_distancia = (distancia_votos_2do / votos_totales_seccion) * 100,
+        
+        # Porcentaje de participación
+        porc_participacion = (votos_totales_seccion/pobtotal)*100,
+        
+        # --- Creación del Popup con formato HTML ---
+        popup_html = paste0(
+          "<b>Sección: </b>", htmlEscape(SECCION), "<br>",
+          "<b>Elección: </b>", htmlEscape(eleccion_año_id), "<hr style='margin:0.5rem;'>",
+          
+          "<b>Población: </b>",format(round(pobtotal,0), big.mark = ","),"<br>",
+          "<b>Votos Totales: </b>", format(round(votos_totales_seccion,0), big.mark = ","), "<br>",
+          "<b>% Participación: </b>", round(porc_participacion,2), "%<hr style='margin:0.5rem;'>",
+          
+          "<b>Ganador: </b>", htmlEscape(partido_1), "<br>",
+          "<b>Votos Ganador: </b>",format(round(votos_1, 0), big.mark = ","), "<br>",
+          "<b>% Voto Ganador: </b>", round(porc_votos_ganador, 2), "%<hr style='margin:0.5rem;'>",
+          
+          "<b>Ventaja sobre 2do lugar: </b>", format(distancia_votos_2do, big.mark = ","), " votos", " (",round(porc_distancia, 2),"%)"
+        )
+      )
     
-    
-    nombre_2a <- paste0("Resultados por sección en la elección de ",input$eleccion_2 )
     mapa <- leaflet() %>% 
-      addProviderTiles(providers$CartoDB.Voyager)  %>% 
-      addLegend(pal = pal, values =base_mapa_2$ganador, labels = c("No", "Sí"), title = "¿Ganador de la sección?")%>% 
+      addProviderTiles(providers$CartoDB.Voyager) %>% 
+      addLegend(
+        position = "bottomright",
+        pal = pal, 
+        values =shp_dta_popup$partido_1, 
+        labels = c("No", "Sí"), 
+        title = "Ganador de sección") %>% 
       addPolygons(
-        data= base_mapa_2, 
-        color = "#596475", fillColor = pal(base_mapa_2$ganador), 
-        popup = popup, stroke = T, fillOpacity = 0.7, weight= 1.3,
+        data = shp_dta_popup,
+        color = "#596475", 
+        stroke = T, weight= 1.3,
+        fillColor = pal(shp_dta_popup$partido_1),fillOpacity = 0.7, 
+        popup = ~ popup_html, 
         highlightOptions = highlightOptions(
           weight = 4,
           color = "#f72585",
           fillOpacity = 0.9,
           bringToFront = TRUE
         )) %>% 
-      addControl(nombre_2a, position = "bottomleft", className="map-title") %>% 
-      
-      
-      addPolygons(data= base_mapa_2, color = "#596475", fillColor = pal(base_mapa_2$ganador), popup = popup, stroke = T, fillOpacity = 0, weight= 0.5)
+      addControl(nombre_1a, position = "bottomleft", className="map-title") 
     
-    mapa
+    return(mapa)
     
   })
   
+  
+  ### Descarga datos
   output$downloadganador_elec2 <- downloadHandler(
     filename = function() {
       paste("my_data-", Sys.Date(), ".csv", sep="")
@@ -342,14 +454,7 @@ function(input, output, session) {
   
   
   
-  
-  
-  
-  
-  
-  
-  
-  #### Simulación de escenarios
+  # Simulación de escenarios ----
   
   base_sim_1 <- reactive({
 
@@ -632,7 +737,7 @@ function(input, output, session) {
   
   
   
-  # Evolución Electoral ----
+  # Evolución Partidista ----
   
   base_eleccion_1_a <- reactive({
     
@@ -698,7 +803,7 @@ function(input, output, session) {
       mutate(cambio_s = (prop_2-prop_1)/prop_1)
     
     base_mapa_gp <- secciones()%>% 
-      inner_join(base, by = c("SECCION" = "seccion")) %>% 
+      left_join(base, by = c("SECCION" = "seccion")) %>% 
       filter(!is.na(SECCION)) 
     
     
@@ -1574,14 +1679,11 @@ function(input, output, session) {
     return(x)
   })
   
-  
-  
-
-  
   output$mapa_censales <- renderLeaflet({
     
-    mapa_censales <- secciones() %>% 
-      inner_join(query_censales(), by = "SECCION") %>% 
+    shp_dta <- secciones() %>% 
+      st_transform(shp_dta, crs = "+proj=longlat +datum=WGS84") %>% 
+      left_join(query_censales(), by = "SECCION") %>% 
       filter(!is.na(SECCION), 
              !is.na(variable_interes),
              !variable_interes ==0
@@ -1589,42 +1691,114 @@ function(input, output, session) {
     
     
     validate(
-      need(nrow(mapa_censales) > 0, 
+      need(nrow(shp_dta) > 0, 
            "Con los permisos contratados, no tienes acceso a este municipio/distrito, cambia el filtro al inicio de la App. 
              Si consideras que esto es incorrecto o se trata de algún otro error, por favor contacta a tu proveedor.")
     )
     
     
-    num_unique_vals <- length(unique(mapa_censales[["variable_interes"]]))
+    num_unique_vals <- length(unique(shp_dta[["variable_interes"]]))
     
     
     number = min(num_unique_vals, length(c("#d9ed92","#b5e48c","#99d98c","#76c893","#52b69a","#34a0a4","#168aad","#1a759f","#1e6091","#184e77")))
     
     pal <- colorQuantile(c("#d9ed92","#b5e48c","#99d98c","#76c893","#52b69a","#34a0a4","#168aad","#1a759f","#1e6091","#184e77"), 
-                         domain = mapa_censales$variable_interes,
+                         domain = shp_dta$variable_interes,
                          n = number)
     
     
-    mapa_censales <- st_transform(mapa_censales, crs = "+proj=longlat +datum=WGS84")
-    popup_sim1 = paste0("Seccion: ", mapa_censales$SECCION, 
-                        ". <br/> Población con estas características: ", comma(mapa_censales$variable_interes)
+    popup_sim1 = paste0("Seccion: ", shp_dta$SECCION, 
+                        ". <br/> Población con estas características: ", comma(shp_dta$variable_interes))
+    
+    # 2. Crea una etiqueta amigable a partir del nombre de la variable en el input
+    label_base <- stringr::str_to_title(stringr::str_replace_all(input$censo_interes, "_", " "))
+    
+    # Puedes hacerla aún más descriptiva con un case_when si tienes pocas opciones
+    # 2. Crea la etiqueta descriptiva final usando case_when
+    label_interes <- case_when(
+      # --- Población ---
+      input$censo_interes == "POBTOT"      ~ "Población Total",
+      input$censo_interes == "POBFEM"      ~ "Población Femenina",
+      input$censo_interes == "POBMAS"      ~ "Población Masculina",
+      
+      # --- Grupos Específicos ---
+      input$censo_interes == "PHOG_IND"    ~ "Población en Hogares Indígenas",
+      input$censo_interes == "POB_AFRO"    ~ "Población Afrodescendiente",
+      input$censo_interes == "PCON_DISC"   ~ "Población con Discapacidad",
+      
+      # --- Economía ---
+      input$censo_interes == "POCUPADA"    ~ "Población Ocupada",
+      input$censo_interes == "PDESOCUP"    ~ "Población Desocupada",
+      
+      # --- Vivienda ---
+      input$censo_interes == "VIVPAR_HAB"  ~ "Viviendas Particulares Habitadas",
+      input$censo_interes == "VIVPAR_DES"  ~ "Viviendas Particulares Deshabitadas",
+      input$censo_interes == "PROM_OCUP"   ~ "Promedio de Ocupantes por Vivienda",
+      
+      # --- Educación ---
+      input$censo_interes == "GRAPROES"    ~ "Grado Promedio de Escolaridad",
+      
+      # --- Caso por Defecto ---
+      # Si input$censo_interes no coincide con ninguno de los anteriores,
+      # usa la versión simple que creamos al principio.
+      TRUE ~ label_base 
     )
     
+    # 3. Usa mutate para construir el dataframe final con el popup
+    if(input$censo_interes == "GRAPROES"){
+      shp_dta_con_popup <- shp_dta %>%
+        mutate(
+          # --- Creación del Popup con formato HTML ---
+          popup_html = paste0(
+            "<b>Municipio: </b>", htmlEscape(NOM_MUN), "<br>",
+            "<b>Sección: </b>", htmlEscape(SECCION), "<hr style='margin:0.5rem;'>",
+            
+            "<b>Población Total: </b>", format(round(POBTOT, 0), big.mark = ","), "<br>",
+            
+            # Aquí usamos la etiqueta dinámica que creamos
+            "<b>Nivel de escolaridad: </b>", GRAPROES_NIVEL , "<br>",
+            "<b>", label_interes, ": </b>", format(round(variable_interes, 2), big.mark = ","), "<br>"
+          )
+        )
+    }else{
+      shp_dta_con_popup <- shp_dta %>%
+        mutate(
+          # --- Creación del Popup con formato HTML ---
+          popup_html = paste0(
+            "<b>Municipio: </b>", htmlEscape(NOM_MUN), "<br>",
+            "<b>Sección: </b>", htmlEscape(SECCION), "<hr style='margin:0.5rem;'>",
+            
+            "<b>Población Total: </b>", format(round(POBTOT, 0), big.mark = ","), "<br>",
+            
+            # Aquí usamos la etiqueta dinámica que creamos
+            "<b>", label_interes, ": </b>", format(round(variable_interes, 2), big.mark = ","), "<br>"
+          )
+        )
+    }
     
-    mapa_censales <- leaflet() %>% 
+    
+    
+    fig_censales <- leaflet() %>% 
       addProviderTiles(providers$CartoDB.Voyager) %>% 
       addLegend(pal = pal, 
-                values = mapa_censales$variable_interes,  
-                title = "Cuántil de la sección de acuerdo con esta variable") %>% 
-      addPolygons(data = mapa_censales, 
-                  color = "#596475", 
-                  fillColor = ~pal(variable_interes), 
-                  popup = popup_sim1, 
-                  stroke = T, 
-                  fillOpacity = 1, 
-                  weight= 0.5)
+                values = shp_dta_con_popup$variable_interes,  
+                title = "Proporciones.") %>% 
+      addPolygons(
+        data = shp_dta_con_popup,
+        color = "#596475",
+        fillColor = ~pal(variable_interes),
+        popup = ~ popup_html,
+        stroke = T,
+        fillOpacity = 0.65,
+        weight= 1.3,
+        highlightOptions = highlightOptions(
+          weight = 1.5,
+          color = "#f72585",
+          fillOpacity = 0.9,
+          bringToFront = TRUE
+        ))
 
-    mapa_censales
+    return(fig_censales)
     
   })
   
@@ -1715,19 +1889,23 @@ function(input, output, session) {
   })
 
   # Voto sombra ----
+  
+  # rank_por_seccion_eleccion
+  
   query_sombra <- reactive({
-    x <- cant_votos_nl %>% 
-      filter(eleccion_año_id %in% input$eleccion_sombra) %>% 
-      group_by(seccion) %>%
-      mutate(
-        Rank = dense_rank(desc(votos)),
-        seccion = as.character(as.integer(seccion))
-        ) %>%
-      filter(Rank == 2)
+    req(input$eleccion_sombra)
     
-    return(x)
+    
+    dta <- rank_por_seccion_eleccion()
+    dta_filtrada <- dta %>%
+      filter(
+        eleccion_año_id == input$eleccion_sombra
+      )
+    
+    return(dta_filtrada)
   })
   
+  # Tabla
   output$dt_sombra_sombra <- DT::renderDT({
     # browser()
     
@@ -1752,9 +1930,11 @@ function(input, output, session) {
     
   })
   
+  
+  # Mapa
   output$mapa_sombra <- renderLeaflet({
 
-      base_mapa <- query_sombra() 
+      base_mapa <- query_sombra()
       
       shp <- secciones() %>% st_transform(crs = "+proj=longlat +datum=WGS84")
       
@@ -1762,16 +1942,44 @@ function(input, output, session) {
         shp,
         base_mapa,
         by = c("SECCION" = "seccion")
-      )
+      ) %>%
+        # Usar mutate para añadir las nuevas columnas de cálculo y el popup
+        mutate(
+          # --- Cálculos ---
+          # Porcentaje de votos que obtuvo el ganador sobre el total de la sección
+          porc_votos_ganador = (votos_1 / votos_totales_seccion) * 100,
+          porc_votos_2do = (votos_2 / votos_totales_seccion) * 100,
+          
+          # Diferencia de votos entre el primer y segundo lugar
+          distancia_votos_2do = votos_1 - votos_2,
+          porc_distancia = (distancia_votos_2do / votos_totales_seccion) * 100,
+          
+          # Porcentaje de participación
+          porc_participacion = (votos_totales_seccion/pobtotal)*100,
+          
+          # --- Creación del Popup con formato HTML ---
+          popup_html = paste0(
+            "<b>Sección: </b>", htmlEscape(SECCION), "<br>",
+            "<b>Elección: </b>", htmlEscape(eleccion_año_id), "<hr style='margin:0.5rem;'>",
+            
+            "<b>Población: </b>",format(round(pobtotal,0), big.mark = ","),"<br>",
+            "<b>Votos Totales: </b>", format(round(votos_totales_seccion,0), big.mark = ","), "<br>",
+            "<b>% Participación: </b>", round(porc_participacion,2), "%<hr style='margin:0.5rem;'>",
+            
+            "<b>2do Lugar: </b>", htmlEscape(partido_2), "<br>",
+            "<b>Votos 2do Lugar: </b>",format(round(votos_2, 0), big.mark = ","), "<br>",
+            "<b>% Voto 2do Lugar: </b>", round(porc_votos_2do, 2), "%<hr style='margin:0.5rem;'>",
+            
+            "<b>Votos 1do Lugar: </b>",format(round(votos_1, 0), big.mark = ","), " (",partido_1,")", "<br>",
+            "<b>Ventaja sobre 1do lugar: </b>", format(distancia_votos_2do, big.mark = ","), " votos", " (",round(porc_distancia, 2),"%)"
+          )
+        )
 
       validate(
         need(nrow(shp_base_mapa) > 0, 
              "Con los permisos contratados, no tienes acceso a este municipio/distrito, cambia el filtro al inicio de la App. 
              Si consideras que esto es incorrecto o se trata de algún otro error, por favor contacta a tu proveedor.")
       )
-      
-      popup = paste0("Seccion: ",shp_base_mapa$SECCION, ". \n Segundo Lugar:",shp_base_mapa$partido, ".")
-      nombre_1a <- paste0("Resultados por sección en la elección de ", input$eleccion_1)
       
       paleta_partidos <- c(
         "PRI" = "#e41a1c",      # Rojo
@@ -1784,7 +1992,7 @@ function(input, output, session) {
       )
       
       # Obtener la lista de partidos únicos que están realmente en los datos del mapa (excluyendo los NA)
-      partidos_en_mapa <- unique(na.omit(shp_base_mapa$partido))
+      partidos_en_mapa <- unique(na.omit(shp_base_mapa$partido_2))
       
       # Crear el vector de colores para la leyenda:
       # Primero los colores de los partidos presentes, luego el color para los NA.
@@ -1793,16 +2001,17 @@ function(input, output, session) {
       # Crear el vector de etiquetas para la leyenda, en el mismo orden que los colores
       etiquetas_leyenda <- c(partidos_en_mapa, "Sin datos / No aplica")
       
+      
       mapa <- leaflet() %>% 
         addProviderTiles(providers$CartoDB.Voyager) %>% 
         addPolygons(
           data = shp_base_mapa,
           label = ~ SECCION,
           color = "#596475", 
-          fillColor = ~ifelse(is.na(partido), 
+          fillColor = ~ifelse(is.na(partido_2), 
                               "#dad7cd",  # Color gris para los valores NA
-                              paleta_partidos[partido]), 
-          popup = popup, 
+                              paleta_partidos[partido_2]), 
+          popup = ~ popup_html, 
           stroke = T, 
           fillOpacity = 0.7, 
           weight= 1.3,
@@ -1833,6 +2042,23 @@ function(input, output, session) {
       write.csv(query_sombra(), file)
     }
   )
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
   
 
   # Distancia Primero-Segundo ----

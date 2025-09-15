@@ -28,6 +28,7 @@ library(tidyverse)
 library(scales)
 library(colorRamps)
 library(readxl)
+library(htmltools)
 
 
 ## 2. Constantes, Paletas de Colores y Opciones Fijas ----
@@ -220,6 +221,21 @@ data_secc_cpv2020 <- data_mza_secc %>%
   ) %>% 
   ungroup() %>%
   mutate(SECCION = as.character(SECCION))
+
+# Definir los nuevos límites de los rangos
+breaks <- c(-Inf, 0, 6, 9, 12, 17, Inf)
+
+# Definir las etiquetas para cada nivel
+labels <- c("Sin Escolaridad", "Primaria", "Secundaria", "Preparatoria", "Licenciatura", "Posgrado")
+
+# Crear la nueva variable categórica más detallada
+data_secc_cpv2020$GRAPROES_NIVEL <- cut(data_secc_cpv2020$GRAPROES,
+                                        breaks = breaks,
+                                        labels = labels,
+                                        right = FALSE, # El intervalo es [inicio, fin)
+                                        include.lowest = TRUE) # Incluye el valor mínimo
+
+
 
 # Unión de datos espaciales de manzanas con datos censales
 seccion_data_para_unir <- data_nl_mza2023_secc2024 %>%

@@ -66,10 +66,10 @@ ui_code <- dashboardPage(
                # para asegurar la compatibilidad con tu código del servidor.
                # menuSubItem("Participación Electoral",           tabName = "participacion"), # Añadido desde el primer código
                menuSubItem("Comparativo Resultados Históricos", tabName = "ganadores"),
-               menuSubItem("Distancia entre Primero y Segundo", tabName = "diferencias"),
+               menuSubItem("Distancia Entre Primero y Segundo", tabName = "diferencias"),
                menuSubItem("Voto Sombra",                       tabName = "sombra"),
-               menuSubItem("Evolución partidista",              tabName = "cambios_porcentuales"),
-               #menuSubItem("Voto diferenciado partidista",      tabName = "rendimiento_historico"),
+               menuSubItem("Evolución Partidista",              tabName = "cambios_porcentuales"),
+               menuSubItem("Voto Diferenciado Partidista",      tabName = "rendimiento_historico"),
                #menuSubItem("Comparativa ganadas/perdidas",      tabName = "robados"),
                menuSubItem("BD Resultados",                     tabName = "creacion_tablas"),
                # menuSubItem("Lealtad Partidista",                tabName = "lealtad"), # Añadido desde el primer código
@@ -246,13 +246,13 @@ ui_code <- dashboardPage(
         )
       ),
       
-      # Pestaña: Visualizador Histórico-Electoral ----
+      # Pestaña: Comparativo Resultados Históricos ----
       tabItem(
         tabName = "ganadores",
         fluidRow(
           box(
             width = 12,
-            title = "Visualizador Histórico-Electoral",
+            title = "Comparativo Resultados Históricos",
             collapsible = TRUE, collapsed = T, 
             solidHeader = F, status = "info",
             p("Explore y compare visualmente los datos electorales de diferentes periodos. Seleccione dos elecciones para generar mapas interactivos donde cada sección se colorea según el partido ganador.")
@@ -263,7 +263,8 @@ ui_code <- dashboardPage(
             status = "success",
             shiny::selectInput(
               "eleccion_1","Elección para el primer panel:",
-              choices = lista_elecciones_nombres,selected = lista_elecciones_nombres$`Elecciones 2024`[1]),
+              choices = choices_rendimiento_historico,
+              selected = choices_rendimiento_historico$`Elecciones 2024`[1]),
             
             leafletOutput("mapa_ganador_1", height = "80vh"),
             shiny::actionButton("mapGanador1Fullscreen", "Pantalla Completa"),
@@ -273,7 +274,8 @@ ui_code <- dashboardPage(
             status = "success",
             shiny::selectInput(
               "eleccion_2","Elección para el segundo panel:",
-              choices = lista_elecciones_nombres,selected = lista_elecciones_nombres$`Elecciones 2021`[1]),
+              choices = choices_rendimiento_historico,
+              selected = choices_rendimiento_historico$`Elecciones 2021`[1]),
             
             leafletOutput("mapa_ganador_2", height = "80vh"),
             shiny::actionButton("mapGanador2Fullscreen", "Pantalla Completa"),
@@ -572,7 +574,7 @@ ui_code <- dashboardPage(
         
         # He modificado el título para que coincida con el nuevo nombre del menú y he quitado el 'collapsed'
         box(
-          title = tags$h3("Datos Poblacionales por Sección", style = "margin:0;"), 
+          title = "Datos Poblacionales por Sección", 
           collapsible = TRUE, 
           collapsed = FALSE, # Es mejor mostrar la instrucción inicial por defecto
           width = 12, 
