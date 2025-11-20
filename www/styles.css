@@ -1,31 +1,61 @@
-/*.content-wrapper {
-  background-color: #FFFFFF;
-  }*/
-.box {
-  background-color: #FFFFFF;
-  }
- body {
-  color: #0D3B66; 
-  }
-.box.box-success .box-header .box-title {
-  color: #0D3B66; 
-}
-.box-header {
-  border-top: none;
-}
-.shiny-table-output td {
-  color: #FAF0CA;  
-}
-.skin-blue .main-header .navbar {
-  background-color: #0D3B66;
-  }
-.skin-blue .main-header .logo {
-  background-color: #0D3B66;
+/* Fondo general suave */
+body {
+  background-color: #FFF6F6;
+  color: #5C2A2A; /* Texto principal */
+  font-family: "Helvetica Neue", sans-serif;
 }
 
-.col-lg-1, .col-lg-10, .col-lg-11, .col-lg-12, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-md-1, .col-md-10, .col-md-11, .col-md-12, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-sm-1, .col-sm-10, .col-sm-11, .col-sm-12, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-xs-1, .col-xs-10, .col-xs-11, .col-xs-12, .col-xs-2, .col-xs-3, .col-xs-4, .col-xs-5, .col-xs-6, .col-xs-7, .col-xs-8, .col-xs-9 {
-    position: relative;
-    min-height: 1px;
-    padding-right: 7px;
-    padding-left: 7px;
+/* Cajas blancas flotantes */
+.box {
+  background-color: #FFFFFF;
+  border: 1px solid #FADADD;
+  box-shadow: 0 2px 5px rgba(201, 76, 76, 0.05);
+}
+
+/* Título de caja */
+.box.box-success .box-header .box-title {
+  color: #C94C4C;
+  font-weight: bold;
+}
+
+/* Cabecera de caja */
+.box-header {
+  border-top: 3px solid #C94C4C;
+  background-color: #FADADD;
+}
+
+/* Texto en tablas: sobrio y contrastante */
+.shiny-table-output td {
+  color: #444444;
+}
+
+/* Barra superior (navbar) */
+.skin-blue .main-header .navbar {
+  background-color: #C94C4C;
+  border-bottom: 2px solid #7A5C5C;
+}
+
+/* Logo Boleta en barra */
+.skin-blue .main-header .logo {
+  background-color: #C94C4C;
+  color: #FFF6F6;
+  font-weight: bold;
+}
+
+/* Si usas texto en el logo */
+.skin-blue .main-header .logo > .logo-lg {
+  color: #FFF6F6;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+/* Columnas (sin cambio de estilo, pero incluimos por si se quiere personalizar luego) */
+.col-lg-1, .col-lg-10, .col-lg-11, .col-lg-12, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9,
+.col-md-1, .col-md-10, .col-md-11, .col-md-12, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9,
+.col-sm-1, .col-sm-10, .col-sm-11, .col-sm-12, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9,
+.col-xs-1, .col-xs-10, .col-xs-11, .col-xs-12, .col-xs-2, .col-xs-3, .col-xs-4, .col-xs-5, .col-xs-6, .col-xs-7, .col-xs-8, .col-xs-9 {
+  position: relative;
+  min-height: 1px;
+  padding-right: 7px;
+  padding-left: 7px;
 }

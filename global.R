@@ -57,18 +57,19 @@ paleta_partidos <- c(
 )
 
 # Opciones para selects de variables censales (manzanas y secciones)
-chs_censales <- c("Población total" = "POBTOT", 
-                  "Población Femenina" = "POBFEM",
-                  "Población Masculina" = "POBMAS", 
-                  "Población Indígena" = "PHOG_IND",
-                  "Población Afromexicana" = "POB_AFRO",
-                  "Población con discapacidad" = "PCON_DISC",
-                  "Población de 12 años y más ocupada" = "POCUPADA",
-                  "Población de 12 años y más desocupada" = "PDESOCUP",
-                  "Viviendas particulares habitadas" = "VIVPAR_HAB",
-                  "Viviendas particulares deshabitadas" = "VIVPAR_DES",
-                  "Grado promedio de escolaridad" = "GRAPROES",
-                  "Promedio de ocupantes en viviendas particulares habitadas" = "PROM_OCUP")
+chs_censales <- c(
+  # "Población total" = "POBTOT",
+  # "Población Femenina" = "POBFEM",
+  # "Población Masculina" = "POBMAS", 
+  "Población Indígena" = "PHOG_IND",
+  "Población Afromexicana" = "POB_AFRO",
+  "Población con discapacidad" = "PCON_DISC",
+  "Población de 12 años y más ocupada" = "POCUPADA",
+  "Población de 12 años y más desocupada" = "PDESOCUP",
+  "Viviendas particulares habitadas" = "VIVPAR_HAB",
+  "Viviendas particulares deshabitadas" = "VIVPAR_DES",
+  "Grado promedio de escolaridad" = "GRAPROES",
+  "Promedio de ocupantes en viviendas particulares habitadas" = "PROM_OCUP")
 
 # Mapeo de nombres de elecciones para la UI
 choice_mapping <- c("Diputado Local 2021"   = "dip_local_21",
@@ -143,24 +144,37 @@ municipios_lista <- st_read("www/shps/MUNICIPIO.shp") %>%
   select(MUNICIPIO, NOMBRE)
 
 secciones_prev_shp <- st_read("www/shps/SECCION_2.shp")
-manzanas_nl_shp <- st_read("www/shps/censo_manzanas_nl.shp")
-d_local_shp <- st_read("www/shps/DISTRITO_LOCAL.shp")
+# manzanas_nl_shp <- st_read("www/shps/censo_manzanas_nl.shp")
+# d_local_shp <- st_read("www/shps/DISTRITO_LOCAL.shp")
 shp_cols_x_secc_shp <- st_read("www/shps/shp_cols_x_secc_simplify/shp_cols_x_secc.shp")
 shp_mza_2023_shp <- st_read('www/shps/19m.shp')
 
 # Datos tabulares (estadísticas, votos, etc.)
 secciones_sd <- read_csv("www/data/datos_por_seccion_NUEVO_LEON.csv")
-censales <- read_csv("www/data/estadisticas_censales_nuevoleon.csv")
-cant_votos_nl <- read_csv("www/data/cant_votos_nl.csv")
+# censales <- read_csv("www/data/estadisticas_censales_nuevoleon.csv")
+cant_votos_nl <- read_csv("www/data/cant_votos_nl.csv")                                               # ***
 base_ganadores <- read_csv("www/data/datos_ganadores_NUEVO_LEON.csv")
 res_trab <- read_csv("www/data/resultados_trabajado_NUEVO_LEON.csv")
 cant_votos <- read_csv("www/data/resultados_trabajado_cant_votos_NUEVO_LEON.csv")
 colonias <- read_excel("www/data/colonias.xlsx")
 edades <- read_csv("www/data/edades_arreglado.csv")
 
+participacion <- readRDS("www/data/participacion.rds") %>%
+  left_join(municipios_lista, by = "MUNICIPIO")
+
+# Datos derivados
+# participacion <- read_csv("www/data/participacion.csv", 
+#                           col_types = cols(...1 = col_skip(), GEOMETRY1_ = col_skip()))
+
 # Datos de manzanas (CPV 2020)
-data_mza_urbana_cpv2020 <- read_csv("www/mzas/conjunto_de_datos_ageb_urbana_19_cpv2020.csv")
-data_nl_mza2023_secc2024 <- read_csv("www/mzas/data_nl_mza2023_secc2024.csv")
+
+  ## Contine la información censal a nivel manzana
+  data_mza_urbana_cpv2020 <- read_csv("www/mzas/conjunto_de_datos_ageb_urbana_19_cpv2020.csv")
+  
+  ## Contiene la relacion entre manzana y seccion electoral
+  data_nl_mza2023_secc2024 <- read_csv("www/mzas/data_nl_mza2023_secc2024.csv")
+  
+  
 select_data_cpv <- read.csv("www/mzas/diccionario_datos_ageb_urbana_19_cpv2020.csv")
 
 
@@ -177,20 +191,12 @@ secciones_prev <- secciones_prev_shp %>%
   select(-GEOMETRY1_)
 
 # Transformación de proyecciones espaciales
-d_local <- st_transform(d_local_shp, crs = "+proj=longlat +datum=WGS84")
+# d_local <- st_transform(d_local_shp, crs = "+proj=longlat +datum=WGS84")
 shp_cols_x_secc <- st_transform(shp_cols_x_secc_shp, 4326)
 shp_mza_2023 <- st_transform(shp_mza_2023_shp, 4326)
 
 # Limpieza y joins de datos electorales
 cant_votos_nl$partido <- toupper(cant_votos_nl$partido)
-
-# base_ganadores <- base_ganadores %>% 
-#   mutate(seccion = as.character(seccion)) %>% 
-#   left_join(select(secciones_prev, seccion = SECCION, distrito = DISTRITO_L), by = "seccion")
-
-# res_trab <- res_trab %>% 
-#   mutate(seccion = as.character(seccion)) %>% 
-#   left_join(select(secciones_prev, seccion = SECCION, distrito = DISTRITO_L), by = "seccion")
 
 cant_votos <- cant_votos %>% 
   mutate(seccion = as.character(seccion)) %>% 
@@ -202,25 +208,49 @@ edades <- edades %>%
 # Procesamiento y agregación de datos censales por manzana y sección
 data_mza_secc <- merge(data_nl_mza2023_secc2024, data_mza_urbana_cpv2020, by="CVEGEO", all.x=TRUE)
 
-data_secc_cpv2020 <- data_mza_secc %>%
-  filter(!is.na(NOM_ENT)) %>%
-  group_by(SECCION, NOM_ENT, NOM_MUN) %>%
-  summarise(
-    POBTOT = sum(POBTOT, na.rm = TRUE),
-    POBFEM = sum(POBFEM, na.rm = TRUE),
-    POBMAS = sum(POBMAS, na.rm = TRUE),
-    PHOG_IND = sum(PHOG_IND, na.rm = TRUE),
-    POB_AFRO = sum(POB_AFRO, na.rm = TRUE),
-    PCON_DISC = sum(PCON_DISC, na.rm = TRUE),
-    POCUPADA = sum(POCUPADA, na.rm = TRUE),
-    PDESOCUP = sum(PDESOCUP, na.rm = TRUE),
-    VIVPAR_HAB = sum(VIVPAR_HAB, na.rm = TRUE),
-    VIVPAR_DES = sum(VIVPAR_DES, na.rm = TRUE),
-    GRAPROES = round(mean(GRAPROES, na.rm = TRUE), 2),
-    PROM_OCUP = round(mean(PROM_OCUP, na.rm = TRUE), 2)
-  ) %>% 
-  ungroup() %>%
-  mutate(SECCION = as.character(SECCION))
+# data_secc_cpv2020 <- data_mza_secc %>%
+#   filter(!is.na(NOM_ENT)) %>%
+#   group_by(NOM_ENT, NOM_MUN,SECCION) %>%
+#   summarise(
+#     POBTOT = sum(POBTOT, na.rm = TRUE),
+#     POBFEM = sum(POBFEM, na.rm = TRUE),
+#     POBMAS = sum(POBMAS, na.rm = TRUE),
+#     
+#     P_18YMAS = sum(P_18YMAS, na.rm = TRUE),
+#     P_18YMAS_F = sum(P_18YMAS_F, na.rm = TRUE),
+#     P_18YMAS_M = sum(P_18YMAS_M, na.rm = TRUE),
+# 
+#     PHOG_IND = sum(PHOG_IND, na.rm = TRUE),
+#     POB_AFRO = sum(POB_AFRO, na.rm = TRUE),
+#     PCON_DISC = sum(PCON_DISC, na.rm = TRUE),
+#     
+#     POCUPADA = sum(POCUPADA, na.rm = TRUE),
+#     PDESOCUP = sum(PDESOCUP, na.rm = TRUE),
+#     PROM_OCUP = round(mean(PROM_OCUP, na.rm = TRUE), 2),
+#     
+#     VIVPAR_HAB = sum(VIVPAR_HAB, na.rm = TRUE),
+#     VIVPAR_DES = sum(VIVPAR_DES, na.rm = TRUE),
+#     
+#     GRAPROES = round(mean(GRAPROES, na.rm = TRUE), 2)
+#     
+#   ) %>% 
+#   ungroup() %>%
+#   mutate(SECCION = as.character(SECCION))
+
+data_secc_cpv2020 <- read_csv("www/data/INE_SECCION_2020.csv") %>% 
+  filter(
+    ENTIDAD == 19
+  ) %>%
+  select(
+    ENTIDAD,DISTRITO,SECCION,
+    POBTOT,POBFEM,POBMAS,
+    P_18YMAS,P_18YMAS_F,P_18YMAS_M,
+    PHOG_IND,POB_AFRO,PCON_DISC,
+    POCUPADA,PDESOCUP,PROM_OCUP,
+    VIVPAR_HAB,VIVPAR_DES,
+    GRAPROES
+    
+    )
 
 # Definir los nuevos límites de los rangos
 breaks <- c(-Inf, 0, 6, 9, 12, 17, Inf)
