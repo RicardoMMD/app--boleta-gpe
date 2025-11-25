@@ -4,6 +4,37 @@
 
 function(input, output, session) {
   
+  # ----------------------------------------------------------------------------
+  # AGREGAR ESTO EN server.R (Sección 2 - Filtros Globales)
+  # ----------------------------------------------------------------------------
+  
+  # Observador para mostrar/ocultar los selectores según el Nivel Geográfico
+  observeEvent(input$tipo_filtro_inicial, {
+    
+    switch(input$tipo_filtro_inicial,
+           "Municipio" = {
+             shinyjs::show("municipio_inicial", anim = TRUE, animType = "slide")
+             shinyjs::hide("federal_inicial",   anim = TRUE, animType = "slide")
+             shinyjs::hide("local_inicial",     anim = TRUE, animType = "slide")
+           },
+           "DFederal" = {
+             shinyjs::hide("municipio_inicial", anim = TRUE, animType = "slide")
+             shinyjs::show("federal_inicial",   anim = TRUE, animType = "slide")
+             shinyjs::hide("local_inicial",     anim = TRUE, animType = "slide")
+           },
+           "DLocal" = {
+             shinyjs::hide("municipio_inicial", anim = TRUE, animType = "slide")
+             shinyjs::hide("federal_inicial",   anim = TRUE, animType = "slide")
+             shinyjs::show("local_inicial",     anim = TRUE, animType = "slide")
+           },
+           "Ninguno" = {
+             shinyjs::hide("municipio_inicial", anim = TRUE, animType = "slide")
+             shinyjs::hide("federal_inicial",   anim = TRUE, animType = "slide")
+             shinyjs::hide("local_inicial",     anim = TRUE, animType = "slide")
+           }
+    )
+  })
+  
   # 1. AUTENTICACIÓN Y GESTIÓN DE ROLES ----------------------------------------
   
   res_auth <- secure_server(
