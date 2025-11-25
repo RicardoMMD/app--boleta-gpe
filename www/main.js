@@ -1,96 +1,25 @@
-shinyjs.fullscreen = function() {
-          var elem = document.getElementById('mapa_censales');
-          if (elem.requestFullscreen) {
-            elem.requestFullscreen();
-          } else if (elem.mozRequestFullScreen) { /* Firefox */
-            elem.mozRequestFullScreen();
-          } else if (elem.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
-            elem.webkitRequestFullscreen();
-          } else if (elem.msRequestFullscreen) { /* IE/Edge */
-            elem.msRequestFullscreen();
-          }
-        },
-        
-shinyjs.fullscreenFortaleza = function() {
-    var elem = document.getElementById('mapa_fortaleza');
-    if (elem.requestFullscreen) {
-      elem.requestFullscreen();
-    } else if (elem.mozRequestFullScreen) { /* Firefox */
-      elem.mozRequestFullScreen();
-    } else if (elem.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
-      elem.webkitRequestFullscreen();
-    } else if (elem.msRequestFullscreen) { /* IE/Edge */
-      elem.msRequestFullscreen();
-    }
-  },
+// =============================================================================
+// MAIN.JS - Lógica de Pantalla Completa Modularizada
+// =============================================================================
+
+// 1. Función Helper Genérica (Evita repetir código)
+// Recibe el ID dinámico (namespaced) desde R
+function toggleFullscreen(id) {
+  var elem = document.getElementById(id);
   
-shinyjs.fullscreenVisitas = function() {
-    var elem = document.getElementById('mapa_visitas_secciones');
-    if (elem.requestFullscreen) {
-      elem.requestFullscreen();
-    } else if (elem.mozRequestFullScreen) { /* Firefox */
-      elem.mozRequestFullScreen();
-    } else if (elem.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
-      elem.webkitRequestFullscreen();
-    } else if (elem.msRequestFullscreen) { /* IE/Edge */
-      elem.msRequestFullscreen();
-    }
-  },
-  
-shinyjs.fullscreenGanaOPierde = function() {
-    var elem = document.getElementById('mapa_gana_o_pierde');
-    if (elem.requestFullscreen) {
-      elem.requestFullscreen();
-    } else if (elem.mozRequestFullScreen) { /* Firefox */
-      elem.mozRequestFullScreen();
-    } else if (elem.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
-      elem.webkitRequestFullscreen();
-    } else if (elem.msRequestFullscreen) { /* IE/Edge */
-      elem.msRequestFullscreen();
-    }
-  }
-  
-shinyjs.fullscreenGana = function() {
-    var elem = document.getElementById('mapa_gana');
-    if (elem.requestFullscreen) {
-      elem.requestFullscreen();
-    } else if (elem.mozRequestFullScreen) { /* Firefox */
-      elem.mozRequestFullScreen();
-    } else if (elem.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
-      elem.webkitRequestFullscreen();
-    } else if (elem.msRequestFullscreen) { /* IE/Edge */
-      elem.msRequestFullscreen();
-    }
-  }
-  
-shinyjs.fullscreenPierde = function() {
-    var elem = document.getElementById('mapa_pierde');
-    if (elem.requestFullscreen) {
-      elem.requestFullscreen();
-    } else if (elem.mozRequestFullScreen) { /* Firefox */
-      elem.mozRequestFullScreen();
-    } else if (elem.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
-      elem.webkitRequestFullscreen();
-    } else if (elem.msRequestFullscreen) { /* IE/Edge */
-      elem.msRequestFullscreen();
-    }
-  },
-  
-shinyjs.fullscreenGanador1 = function() {
-    var elem = document.getElementById('mapa_ganador_1');
-    if (elem.requestFullscreen) {
-      elem.requestFullscreen();
-    } else if (elem.mozRequestFullScreen) {
-      elem.mozRequestFullScreen();
-    } else if (elem.webkitRequestFullscreen) {
-      elem.webkitRequestFullscreen();
-    } else if (elem.msRequestFullscreen) {
-      elem.msRequestFullscreen();
-    }
+  // Verificación de seguridad por si el elemento no existe aún
+  if (!elem) {
+    console.error("Elemento no encontrado para fullscreen: " + id);
+    return;
   }
 
-shinyjs.fullscreenGanador2 = function() {
-    var elem = document.getElementById('mapa_ganador_2');
+  // Comprobar si ya estamos en fullscreen para salir, o si no para entrar
+  if (!document.fullscreenElement &&    // Standard
+      !document.mozFullScreenElement && // Firefox
+      !document.webkitFullscreenElement && // Chrome/Safari
+      !document.msFullscreenElement) {  // IE/Edge
+      
+    // --- ENTRAR A PANTALLA COMPLETA ---
     if (elem.requestFullscreen) {
       elem.requestFullscreen();
     } else if (elem.mozRequestFullScreen) {
@@ -99,96 +28,52 @@ shinyjs.fullscreenGanador2 = function() {
       elem.webkitRequestFullscreen();
     } else if (elem.msRequestFullscreen) {
       elem.msRequestFullscreen();
-    }
-  }
-
-shinyjs.fullscreenGenerosEdad = function() {
-    var elem = document.getElementById('mapa_generos_edad');
-    if (elem.requestFullscreen) {
-      elem.requestFullscreen();
-    } else if (elem.mozRequestFullScreen) {
-      elem.mozRequestFullScreen();
-    } else if (elem.webkitRequestFullscreen) {
-      elem.webkitRequestFullscreen();
-    } else if (elem.msRequestFullscreen) {
-      elem.msRequestFullscreen();
-    }
-  }
-
-shinyjs.fullscreenPri = function() {
-    var elem = document.getElementById('mapa_pri');
-    if (elem.requestFullscreen) {
-      elem.requestFullscreen();
-    } else if (elem.mozRequestFullScreen) {
-      elem.mozRequestFullScreen();
-    } else if (elem.webkitRequestFullscreen) {
-      elem.webkitRequestFullscreen();
-    } else if (elem.msRequestFullscreen) {
-      elem.msRequestFullscreen();
-    }
-  }
-
-shinyjs.fullscreenSim1 = function() {
-    var elem = document.getElementById('mapa_sim1');
-    if (elem.requestFullscreen) {
-      elem.requestFullscreen();
-    } else if (elem.mozRequestFullScreen) {
-      elem.mozRequestFullScreen();
-    } else if (elem.webkitRequestFullscreen) {
-      elem.webkitRequestFullscreen();
-    } else if (elem.msRequestFullscreen) {
-      elem.msRequestFullscreen();
-    }
-  }
-
-shinyjs.fullscreenCambiosPerc = function() {
-    var elem = document.getElementById('mapa_cambios_perc');
-    if (elem.requestFullscreen) {
-      elem.requestFullscreen();
-    } else if (elem.mozRequestFullScreen) {
-      elem.mozRequestFullScreen();
-    } else if (elem.webkitRequestFullscreen) {
-      elem.webkitRequestFullscreen();
-    } else if (elem.msRequestFullscreen) {
-      elem.msRequestFullscreen();
-    }
-  },
-  
-shinyjs.fullscreenManzanas = function() {
-    var elem = document.getElementById('mapa_manzanas');
-    if (elem.requestFullscreen) {
-      elem.requestFullscreen();
-    } else if (elem.mozRequestFullScreen) { // Firefox
-      elem.mozRequestFullScreen();
-    } else if (elem.webkitRequestFullscreen) { // Chrome, Safari, and Opera
-      elem.webkitRequestFullscreen();
-    } else if (elem.msRequestFullscreen) { // IE/Edge
-      elem.msRequestFullscreen();
-    }
-   }
-   
-shinyjs.fullscreenSombra = function() {
-        var elem = document.getElementById('mapa_sombra');
-        if (elem.requestFullscreen) {
-            elem.requestFullscreen();
-        } else if (elem.mozRequestFullScreen) { // Firefox
-            elem.mozRequestFullScreen();
-        } else if (elem.webkitRequestFullscreen) { // Chrome, Safari, and Opera
-            elem.webkitRequestFullscreen();
-        } else if (elem.msRequestFullscreen) { // IE/Edge
-            elem.msRequestFullscreen();
-        }
     }
     
-shinyjs.fullscreenDiferencia = function() {
-        var elem = document.getElementById('mapa_diferencia');
-        if (elem.requestFullscreen) {
-            elem.requestFullscreen();
-        } else if (elem.mozRequestFullScreen) { // Firefox
-            elem.mozRequestFullScreen();
-        } else if (elem.webkitRequestFullscreen) { // Chrome, Safari, and Opera
-            elem.webkitRequestFullscreen();
-        } else if (elem.msRequestFullscreen) { // IE/Edge
-            elem.msRequestFullscreen();
-        }
+  } else {
+    
+    // --- SALIR DE PANTALLA COMPLETA ---
+    if (document.exitFullscreen) {
+      document.exitFullscreen();
+    } else if (document.webkitExitFullscreen) {
+      document.webkitExitFullscreen();
+    } else if (document.mozCancelFullScreen) {
+      document.mozCancelFullScreen();
+    } else if (document.msExitFullscreen) {
+      document.msExitFullscreen();
     }
+  }
+}
+
+// 2. Definición de funciones ShinyJS
+// Todas redirigen a la helper pasando el ID que reciben desde R
+
+shinyjs.fullscreen = function(id) { toggleFullscreen(id); };
+
+shinyjs.fullscreenFortaleza = function(id) { toggleFullscreen(id); };
+
+shinyjs.fullscreenVisitas = function(id) { toggleFullscreen(id); };
+
+shinyjs.fullscreenGanaOPierde = function(id) { toggleFullscreen(id); };
+
+shinyjs.fullscreenGana = function(id) { toggleFullscreen(id); };
+
+shinyjs.fullscreenPierde = function(id) { toggleFullscreen(id); };
+
+shinyjs.fullscreenGanador1 = function(id) { toggleFullscreen(id); };
+
+shinyjs.fullscreenGanador2 = function(id) { toggleFullscreen(id); };
+
+shinyjs.fullscreenGenerosEdad = function(id) { toggleFullscreen(id); };
+
+shinyjs.fullscreenPri = function(id) { toggleFullscreen(id); };
+
+shinyjs.fullscreenSim1 = function(id) { toggleFullscreen(id); };
+
+shinyjs.fullscreenCambiosPerc = function(id) { toggleFullscreen(id); };
+
+shinyjs.fullscreenManzanas = function(id) { toggleFullscreen(id); };
+
+shinyjs.fullscreenSombra = function(id) { toggleFullscreen(id); };
+
+shinyjs.fullscreenDiferencia = function(id) { toggleFullscreen(id); };
