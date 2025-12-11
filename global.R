@@ -1,5 +1,5 @@
 # ==============================================================================
-# GLOBAL.R - Configuración y Carga de Datos
+# GLOBAL.R - Versión Optimizada
 # ==============================================================================
 
 # 1. CARGA DE LIBRERÍAS --------------------------------------------------------
@@ -15,17 +15,27 @@ library(sf)
 library(tidyverse)
 library(scales)
 library(colorRamps)
-library(readxl)
 library(htmltools)
 library(leaflet.extras2)
-library(shinycssloaders) # Agregado para los spinners
+library(shinycssloaders)
 
-# 2. CARGA DE MÓDULOS (CRÍTICO) ------------------------------------------------
-# Esto hace que las funciones mod_..._ui y mod_..._server estén disponibles
+source("R/branding_config.R")
+
+# 2. CARGA DE MÓDULOS ----------------------------------------------------------
 list.files("R", full.names = TRUE, pattern = "\\.R$") %>% 
   purrr::walk(source)
 
+# ==============================================================================
+# CONFIGURACIÓN DE IDENTIDAD
+# ==============================================================================
+# Cambia esto a "BOLETA" o "QUIPU" según lo que quieras desplegar
+MARCA_ACTIVA <- "QUIPU" 
+
+# Cargamos los parámetros visuales
+APP_CONFIG <- obtener_configuracion_marca(MARCA_ACTIVA)
+
 # 3. CONSTANTES ESTÁTICAS ------------------------------------------------------
+# (Estas consumen poca memoria, se pueden dejar aquí)
 color_partido_2 <- c("MORENA" = "#B41A1A", "PAN" = "#0F58A8", "PRI" = "#FF0000",  
                      "MC" = "#FD7A13", "VERDE" = "#228B22", "PT" = "#FFF200",  
                      "INDEP" = "#A000E5")
@@ -48,94 +58,36 @@ colores_cambio <- c("#800f2f", "#a4133c", "#c9184a", "#ff4d6d", "#ff758f", "#ffb
                     "#f8f9fa", "#d8f3dc", "#b7e4c7", "#95d5b2", "#74c69d", "#52b788", "#40916c", "#2d6a4f", "#1b4332", "#081c15")
 paleta_cambio <- colorBin(palette = colores_cambio, domain = NULL, bins = bins_cambio, na.color = "#ced4da")
 
-# 4. CARGA DE DATOS ------------------------------------------------------------
 
-# Credenciales
-credentials <- readxl::read_excel("www/data/contrasenas_nl.xlsx")
+# 4. CARGA DE DATOS OPTIMIZADA (RDS) -------------------------------------------
 
-# Shapefiles
-municipios_lista <- st_read("www/shps/MUNICIPIO.shp", quiet = TRUE) %>% st_drop_geometry() %>% select(MUNICIPIO, NOMBRE)
-secciones_prev_shp <- st_read("www/shps/SECCION_2.shp", quiet = TRUE)
-shp_cols_x_secc_shp <- st_read("www/shps/shp_cols_x_secc_simplify/shp_cols_x_secc.shp", quiet = TRUE)
-shp_mza_2023_shp <- st_read('www/shps/19m.shp', quiet = TRUE)
+# Credenciales (Ahora desde carpeta segura)
+credentials <- readRDS("seguridad/credentials.rds")
 
-# CSVs
-cant_votos_nl <- read_csv("www/data/cant_votos_nl.csv", show_col_types = FALSE)
-secciones_sd <- read_csv("www/data/datos_por_seccion_NUEVO_LEON.csv", show_col_types = FALSE)
-base_ganadores <- read_csv("www/data/datos_ganadores_NUEVO_LEON.csv", show_col_types = FALSE)
-res_trab <- read_csv("www/data/resultados_trabajado_NUEVO_LEON.csv", show_col_types = FALSE)
-cant_votos <- read_csv("www/data/resultados_trabajado_cant_votos_NUEVO_LEON.csv", show_col_types = FALSE)
-colonias <- read_excel("www/data/colonias.xlsx")
-edades <- read_csv("www/data/edades_arreglado.csv", show_col_types = FALSE)
-participacion <- readRDS("www/data/participacion.rds") %>% left_join(municipios_lista, by = "MUNICIPIO")
+# Listas Auxiliares (Cargamos el objeto y desglosamos)
+listas_aux <- readRDS("data_optimizada/listas_auxiliares.rds")
+choices_rendimiento_historico <- listas_aux$choices_rendimiento_historico
+chs_mun_cols                  <- listas_aux$chs_mun_cols
+chs_poblaciones_manzanas      <- listas_aux$chs_poblaciones_manzanas
+chs_poblaciones_manzanas_t    <- listas_aux$chs_poblaciones_manzanas_t
+lista_elecciones_nombres      <- listas_aux$lista_elecciones_nombres
+choices_elections_sombra      <- listas_aux$choices_elections_sombra
+rm(listas_aux) # Limpiar memoria
 
-# Censales
-data_mza_urbana_cpv2020 <- read_csv("www/mzas/conjunto_de_datos_ageb_urbana_19_cpv2020.csv", show_col_types = FALSE)
-data_nl_mza2023_secc2024 <- read_csv("www/mzas/data_nl_mza2023_secc2024.csv", show_col_types = FALSE)
-select_data_cpv <- read.csv("www/mzas/diccionario_datos_ageb_urbana_19_cpv2020.csv")
-data_secc_cpv2020 <- read_csv("www/data/INE_SECCION_2020.csv", show_col_types = FALSE) %>% 
-  filter(ENTIDAD == 19)
+# Datos Espaciales (Ya vienen con proyección y joins)
+secciones_prev <- readRDS("data_optimizada/secciones_mapa.rds")
+shp_cols_x_secc <- readRDS("data_optimizada/colonias_mapa.rds")
+shp_mza2023_secc2024_cpv2020 <- readRDS("data_optimizada/manzanas_censo_mapa.rds")
+municipios_lista <- readRDS("data_optimizada/municipios_lista.rds")
 
-# 5. PROCESAMIENTO (ETL) -------------------------------------------------------
+# Datos Tabulares
+cant_votos_nl <- readRDS("data_optimizada/cant_votos_nl_procesado.rds")
+cant_votos <- readRDS("data_optimizada/cant_votos_simple.rds")
+base_ganadores <- readRDS("data_optimizada/base_ganadores.rds")
+res_trab <- readRDS("data_optimizada/res_trab.rds")
+edades <- readRDS("data_optimizada/edades.rds")
+participacion <- readRDS("data_optimizada/participacion_full.rds")
+data_secc_cpv2020 <- readRDS("data_optimizada/data_secc_cpv2020_procesado.rds")
 
-# Variables dependientes de los datos cargados
+# Variable simple necesaria para UI
 list_eleccion <- sort(unique(cant_votos_nl$eleccion))
-lista_elecciones_nombres <- list(
-  "Elecciones 2024" = c("Alcalde 2024", "Diputado Federal 2024", "Diputado Local 2024", "Presidencia 2024", "Senado 2024"),
-  "Elecciones 2021" = c("Alcalde 2021", "Diputado Federal 2021", "Diputado Local 2021", "Gobernador 2021"),
-  "Elecciones 2018" = c("Alcalde 2018", "Diputado Federal 2018", "Diputado Local 2018", "Presidencia 2018", "Senado 2018"),
-  "Elecciones 2015" = c("Alcalde 2015", "Diputado Federal 2015", "Diputado Local 2015", "Gobernador 2015")
-)
-
-# Uniones y transformaciones
-secciones_prev <- secciones_prev_shp %>% 
-  left_join(municipios_lista, by = "MUNICIPIO") %>% 
-  left_join(select(secciones_sd, SECCION, pobtotal = POBTOT), by = "SECCION") %>% 
-  mutate(SECCION = as.character(SECCION)) %>% 
-  select(-GEOMETRY1_)
-
-shp_cols_x_secc <- st_transform(shp_cols_x_secc_shp, 4326)
-shp_mza_2023 <- st_transform(shp_mza_2023_shp, 4326)
-
-cant_votos_nl$partido <- toupper(cant_votos_nl$partido)
-cant_votos <- cant_votos %>% mutate(seccion = as.character(seccion)) 
-edades <- edades %>% mutate(seccion = as.character(seccion))
-
-data_secc_cpv2020$GRAPROES_NIVEL <- cut(
-  data_secc_cpv2020$GRAPROES,
-  breaks = c(-Inf, 0, 6, 9, 12, 17, Inf),
-  labels = c("Sin Escolaridad", "Primaria", "Secundaria", "Preparatoria", "Licenciatura", "Posgrado"),
-  right = FALSE, include.lowest = TRUE
-)
-
-shp_mza2023_secc2024_cpv2020 <- shp_mza_2023 %>%
-  left_join(select(data_nl_mza2023_secc2024, CVEGEO, SECCION, area_intersect), by = "CVEGEO") %>%
-  left_join(select(data_mza_urbana_cpv2020, CVEGEO, NOM_ENT, NOM_MUN, NOM_LOC, POBTOT:VPH_SINTIC), by = "CVEGEO")
-
-# Lookup table para elecciones
-choices_rendimiento_historico = list(
-  "Elecciones 2024" = c("Presidencia 2024" = "pres_24", "Senado 2024" = "sen_24", "Diputado federal 2024" = "dip_fed24", "Diputado local 2024" = "dip_local_24", "Alcalde 2024" = "alcalde_24"),
-  "Elecciones 2021" = c("Gobernador 2021" = "gober_21", "Diputado federal 2021" = "dip_fed_21", "Diputado local 2021" = "dip_local_21", "Alcalde 2021" = "alcalde_21"),
-  "Elecciones 2018" = c("Presidencia 2018" = "pres_18", "Senado 2018" = "senado_18", "Diputado federal 2018" = "dip_fed18", "Diputado local 2018" = "dip_local_18", "Alcalde 2018" = "alcalde_18"),
-  "Elecciones 2015" = c("Gobernador 2015" = "gober_15", "Diputado federal 2015" = "dip_fed_15", "Diputado local 2015" = "dip_local_15", "Alcalde 2015" = "alcalde_15")
-)
-
-lookup_table <- tibble(display_name = unlist(lapply(choices_rendimiento_historico, names)), filter_value = unlist(choices_rendimiento_historico)) %>%
-  mutate(año = as.numeric(str_extract(display_name, "\\d{4}$")), eleccion_type = str_trim(str_remove(display_name, "\\s\\d{4}$"))) %>% select(eleccion_type, año, filter_value) 
-
-cant_votos_nl <- cant_votos_nl %>%
-  left_join(lookup_table, by = c("eleccion" = "eleccion_type", "año" = "año")) %>%
-  rename(eleccion_año_id = filter_value)
-
-# Listas auxiliares
-relacion_cve_mun_colonias <- secciones_prev %>% st_drop_geometry() %>% filter(!is.na(NOMBRE)) %>% count(MUNICIPIO, NOMBRE)
-chs_mun_cols <- setNames(relacion_cve_mun_colonias$MUNICIPIO, relacion_cve_mun_colonias$NOMBRE)
-chs_poblaciones_manzanas <- setNames(select_data_cpv$Mnemónico, select_data_cpv$Indicador)
-chs_poblaciones_manzanas_t <- setNames(select_data_cpv$Indicador, select_data_cpv$Mnemónico)
-
-choices_elections_sombra <- list(
-  "Elecciones 2024" = c("Presidente 2024" = "pres24", "Senado 2024" = "sen24", "Diputado Federal 2024" = "fed24", "Diputado Local 2024" = "dipl24", "Alcalde 2024" = "ayunt24"),
-  "Elecciones 2021" = c("Gobernador 2021" = "gob21", "Diputado Federal 2021" = "fed21", "Diputado Local 2021" = "dl21", "Alcalde 2021" = "ayunt21"),
-  "Elecciones 2018" = c("Presidente 2018" = "pres18", "Senado 2018" = "sen18", "Diputado Federal 2018" = "fed18", "Diputado Local 2018" = "dipl18", "Alcalde 2018" = "ayunt18"),
-  "Elecciones 2015" = c("Diputado Federal 2015" = "fed15", "Diputado Local 2015" = "dipl15", "Alcalde 2015" = "ayunt15")
-)

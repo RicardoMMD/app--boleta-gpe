@@ -8,6 +8,28 @@ function(input, output, session) {
   # AGREGAR ESTO EN server.R (Sección 2 - Filtros Globales)
   # ----------------------------------------------------------------------------
   
+
+  
+  # 1. AUTENTICACIÓN Y GESTIÓN DE ROLES ----------------------------------------
+  
+  res_auth <- secure_server(
+    check_credentials = check_credentials(credentials)
+  )
+  
+  output$auth_output <- renderPrint({
+    reactiveValuesToList(res_auth)
+  })
+  
+  # Rol reactivo para pasar a los módulos si es necesario
+  user_role <- reactive({
+    req(res_auth$role)
+    return(res_auth$role)
+  })
+  
+  output$user_role <- renderText({
+    paste("User Role:", user_role())
+  })
+  
   # Observador para mostrar/ocultar los selectores según el Nivel Geográfico
   observeEvent(input$tipo_filtro_inicial, {
     
@@ -33,26 +55,6 @@ function(input, output, session) {
              shinyjs::hide("local_inicial",     anim = TRUE, animType = "slide")
            }
     )
-  })
-  
-  # 1. AUTENTICACIÓN Y GESTIÓN DE ROLES ----------------------------------------
-  
-  res_auth <- secure_server(
-    check_credentials = check_credentials(credentials)
-  )
-  
-  output$auth_output <- renderPrint({
-    reactiveValuesToList(res_auth)
-  })
-  
-  # Rol reactivo para pasar a los módulos si es necesario
-  user_role <- reactive({
-    req(res_auth$role)
-    return(res_auth$role)
-  })
-  
-  output$user_role <- renderText({
-    paste("User Role:", user_role())
   })
   
   

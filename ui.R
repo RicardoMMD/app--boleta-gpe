@@ -5,16 +5,18 @@
 # Definición de la interfaz
 ui_code <- dashboardPage(
   
-  # 1. Cabecera (Header) -------------------------------------------------------
+  title = APP_CONFIG$browser_title, # Título de la pestaña del navegador
+  
+  # 1. Header Dinámico
   dashboardHeader(
     titleWidth = "25rem",
     title = tags$span(
       tags$img(
-        src = "boleta_logo.png", 
+        src = APP_CONFIG$logo_path, 
         height = "40", 
         style = "margin-top:-5px; margin-right:5px;"
       ),
-      "BOLETA Electoral" 
+      APP_CONFIG$app_title
     )
   ),
   
@@ -24,7 +26,7 @@ ui_code <- dashboardPage(
     disable = FALSE,
     
     # Recursos globales
-    includeCSS("www/styles.css"),
+    # includeCSS("www/styles.css"),
     includeScript("www/main.js"),
     useShinyjs(),
     
@@ -155,8 +157,6 @@ ui_code <- dashboardPage(
 # 4. Envoltura de Seguridad (Login) --------------------------------------------
 ui <- secure_app(
   ui_code, 
-  background  = "linear-gradient(rgba(255, 246, 246, 1), 
-                rgba(250, 240, 202, 0.5)),
-                url('https://aleadomi.wordpress.com/wp-content/uploads/2025/06/boletia.png')  repeat center fixed;", 
+  background  = APP_CONFIG$login_background,
   language = "es"
 )

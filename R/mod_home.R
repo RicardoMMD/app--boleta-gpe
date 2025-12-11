@@ -16,8 +16,9 @@ mod_home_ui <- function(id) {
         width = 12,
         collapsible = FALSE,
         
-        h3("Una herramienta de análisis GeoElectoral interactiva"),
-        p("Esta plataforma está diseñada para explorar, analizar y simular datos electorales de manera geográfica. Navega a través de las diferentes herramientas en el menú de la izquierda para descubrir patrones, comparar resultados históricos y obtener insights estratégicos.", style = "font-size: 16px;"),
+         h3(APP_CONFIG$welcome_subtitle),
+        p("Esta plataforma está diseñada para explorar, analizar y simular datos electorales...", style = "font-size: 16px;"),
+        
         
         # Salida de texto dinámica para el rol
         textOutput(ns("user_role_display"))
