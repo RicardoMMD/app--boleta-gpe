@@ -221,14 +221,10 @@ function(input, output, session) {
   mod_comparativa_gp_server("comparativa_gp_1", secciones_reactivas, rank_por_seccion_eleccion)
   
   # 14. Participación
-  mod_participacion_server("participacion_1", 
-                           inputs_globales = list(
-                             tipo = reactive(input$tipo_filtro_inicial),
-                             mun = reactive(input$municipio_inicial),
-                             fed = reactive(input$federal_inicial),
-                             loc = reactive(input$local_inicial)
-                           ),
-                           secciones_base = secciones_reactivas) # Pasa secciones para dibujar el mapa
+  mod_participacion_server("participacion_1", secciones_base = secciones_reactivas)
+  
+  
+  
   
   # 15. Lealtad
   mod_lealtad_server("lealtad_1", base_ganadores_pr)

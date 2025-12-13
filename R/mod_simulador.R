@@ -124,7 +124,7 @@ mod_simulador_server <- function(id, secciones_reactivas) {
       
       mapa_data <- base_sim_1()
       
-      validate(need(nrow(mapa_data) > 0, "No hay datos para la simulación seleccionada."))
+      shiny::validate(need(nrow(mapa_data) > 0, "No hay datos para la simulación seleccionada."))
       
       # Ajustar niveles para la paleta
       niveles <- c("MC", "PAN", "PRI", "morena", "VERDE", "pt", "Empate/Otro")

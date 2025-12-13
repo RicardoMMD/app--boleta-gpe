@@ -79,7 +79,7 @@ mod_ganadores_server <- function(id, secciones_reactivas, rank_por_seccion_elecc
         st_transform(crs = "+proj=longlat +datum=WGS84") %>%
         filter(!is.na(partido_1)) # Filtrar si no hay datos
       
-      validate(
+      shiny::validate(
         need(nrow(shp_dta_popup) > 0, "No hay datos para la selección actual.")
       )
       
@@ -152,7 +152,7 @@ mod_ganadores_server <- function(id, secciones_reactivas, rank_por_seccion_elecc
         st_transform(crs = "+proj=longlat +datum=WGS84") %>%
         filter(!is.na(partido_1))
       
-      validate(need(nrow(shp_dta_popup) > 0, "No hay datos para la selección actual."))
+      shiny::validate(need(nrow(shp_dta_popup) > 0, "No hay datos para la selección actual."))
       
       niveles_partidos <- c("MC", "PAN", "PRI", "MORENA", "INDEPE", "VERDE", "PT", "otro", "PVEM")
       shp_dta_popup$partido_1 <- factor(shp_dta_popup$partido_1, levels = niveles_partidos)

@@ -1,0 +1,2987 @@
+{
+  "choices_rendimiento_historico": {
+    "class": "list",
+    "rows": {},
+    "cols": {},
+    "size_mb": "0 Mb",
+    "keys": ["Elecciones 2024", "Elecciones 2021", "Elecciones 2018", "Elecciones 2015"],
+    "sample": "List object (details omitted)"
+  },
+  "chs_mun_cols": {
+    "class": "numeric",
+    "rows": {},
+    "cols": {},
+    "size_mb": "0 Mb",
+    "sample": [1, 2, 3, 4, 5]
+  },
+  "chs_poblaciones_manzanas": {
+    "class": "character",
+    "rows": {},
+    "cols": {},
+    "size_mb": "0 Mb",
+    "sample": ["POBTOT", "POBFEM", "POBMAS", "P_18YMAS", "P_18YMAS_F"]
+  },
+  "chs_poblaciones_manzanas_t": {
+    "class": "character",
+    "rows": {},
+    "cols": {},
+    "size_mb": "0 Mb",
+    "sample": ["Poblaci贸n total", "Poblaci贸n femenina", "Poblaci贸n masculina", "Poblaci贸n de 18 a帽os y m谩s", "Poblaci贸n femenina de 18 a帽os y m谩s"]
+  },
+  "lista_elecciones_nombres": {
+    "class": "list",
+    "rows": {},
+    "cols": {},
+    "size_mb": "0 Mb",
+    "keys": ["Elecciones 2024", "Elecciones 2021", "Elecciones 2018", "Elecciones 2015"],
+    "sample": "List object (details omitted)"
+  },
+  "choices_elections_sombra": {
+    "class": "list",
+    "rows": {},
+    "cols": {},
+    "size_mb": "0 Mb",
+    "keys": ["Elecciones 2024", "Elecciones 2021", "Elecciones 2018", "Elecciones 2015"],
+    "sample": "List object (details omitted)"
+  },
+  "secciones_prev": {
+    "class": ["sf", "data.frame"],
+    "rows": 2912,
+    "cols": 11,
+    "size_mb": "6.2 Mb",
+    "crs": "WGS 84 / UTM zone 14N",
+    "columns": [
+      {
+        "name": "ID",
+        "type": "numeric",
+        "sample": ["312", "313", "314"]
+      },
+      {
+        "name": "ENTIDAD",
+        "type": "numeric",
+        "sample": ["19", "19", "19"]
+      },
+      {
+        "name": "DISTRITO",
+        "type": "numeric",
+        "sample": ["1", "1", "1"]
+      },
+      {
+        "name": "DISTRITO_L",
+        "type": "numeric",
+        "sample": ["18", "18", "18"]
+      },
+      {
+        "name": "MUNICIPIO",
+        "type": "numeric",
+        "sample": ["19", "19", "19"]
+      },
+      {
+        "name": "SECCION",
+        "type": "character",
+        "sample": ["356", "357", "358"]
+      },
+      {
+        "name": "TIPO",
+        "type": "numeric",
+        "sample": ["2", "2", "2"]
+      },
+      {
+        "name": "CONTROL",
+        "type": "numeric",
+        "sample": ["1642", "1643", "1644"]
+      },
+      {
+        "name": "NOMBRE",
+        "type": "character",
+        "sample": ["SAN PEDRO GARZA GARCIA", "SAN PEDRO GARZA GARCIA", "SAN PEDRO GARZA GARCIA"]
+      },
+      {
+        "name": "pobtotal",
+        "type": "numeric",
+        "sample": ["1942", "708", "1394"]
+      },
+      {
+        "name": "geometry",
+        "type": "geometry",
+        "sample": "POLYGON/POINT..."
+      }
+    ]
+  },
+  "shp_cols_x_secc": {
+    "class": ["sf", "data.frame"],
+    "rows": 9965,
+    "cols": 21,
+    "size_mb": "10.7 Mb",
+    "crs": "EPSG:4326",
+    "columns": [
+      {
+        "name": "FID_SECCIO",
+        "type": "integer",
+        "sample": ["0", "0", "0"]
+      },
+      {
+        "name": "ID",
+        "type": "numeric",
+        "sample": ["1", "1", "1"]
+      },
+      {
+        "name": "ENTIDAD",
+        "type": "integer",
+        "sample": ["19", "19", "19"]
+      },
+      {
+        "name": "DISTRITO_L",
+        "type": "integer",
+        "sample": ["20", "20", "20"]
+      },
+      {
+        "name": "MUNICIPIO",
+        "type": "integer",
+        "sample": ["1", "1", "1"]
+      },
+      {
+        "name": "SECCION",
+        "type": "integer",
+        "sample": ["1", "1", "1"]
+      },
+      {
+        "name": "TIPO",
+        "type": "integer",
+        "sample": ["3", "3", "3"]
+      },
+      {
+        "name": "CONTROL",
+        "type": "numeric",
+        "sample": ["2118", "2118", "2118"]
+      },
+      {
+        "name": "DISTRITO_F",
+        "type": "integer",
+        "sample": ["7", "7", "7"]
+      },
+      {
+        "name": "Geometry1_",
+        "type": "character",
+        "sample": ["1=X+gp", "1=X+gp", "1=X+gp"]
+      },
+      {
+        "name": "FID_COLONI",
+        "type": "integer",
+        "sample": ["326", "332", "333"]
+      },
+      {
+        "name": "ID_1",
+        "type": "numeric",
+        "sample": ["327", "333", "334"]
+      },
+      {
+        "name": "ENTIDAD_1",
+        "type": "integer",
+        "sample": ["19", "19", "19"]
+      },
+      {
+        "name": "MUNICIPI_1",
+        "type": "integer",
+        "sample": ["1", "1", "1"]
+      },
+      {
+        "name": "NOMBRE",
+        "type": "character",
+        "sample": ["ALBERTO VILLARREAL", "CENTRO DE ABASOLO", "LOS PINOS"]
+      },
+      {
+        "name": "CLASIFICAC",
+        "type": "integer",
+        "sample": ["1", "1", "1"]
+      },
+      {
+        "name": "CP",
+        "type": "numeric",
+        "sample": ["65650", "65650", "65650"]
+      },
+      {
+        "name": "OTROS_CP",
+        "type": "character",
+        "sample": [null, null, null]
+      },
+      {
+        "name": "CONTROL_1",
+        "type": "numeric",
+        "sample": ["383", "389", "390"]
+      },
+      {
+        "name": "Geometry11",
+        "type": "character",
+        "sample": ["1=X+gx", "1=X+gy", "1=X+gy"]
+      },
+      {
+        "name": "geometry",
+        "type": "geometry",
+        "sample": "POLYGON/POINT..."
+      }
+    ]
+  },
+  "shp_mza2023_secc2024_cpv2020": {
+    "class": ["sf", "data.frame"],
+    "rows": 100107,
+    "cols": 236,
+    "size_mb": "263 Mb",
+    "crs": "EPSG:4326",
+    "columns": [
+      {
+        "name": "CVEGEO",
+        "type": "character",
+        "sample": ["1900100010055001", "1900100010036022", "1900100010036021"]
+      },
+      {
+        "name": "CVE_ENT",
+        "type": "character",
+        "sample": ["19", "19", "19"]
+      },
+      {
+        "name": "CVE_MUN",
+        "type": "character",
+        "sample": ["001", "001", "001"]
+      },
+      {
+        "name": "CVE_LOC",
+        "type": "character",
+        "sample": ["0001", "0001", "0001"]
+      },
+      {
+        "name": "CVE_AGEB",
+        "type": "character",
+        "sample": ["0055", "0036", "0036"]
+      },
+      {
+        "name": "CVE_MZA",
+        "type": "character",
+        "sample": ["001", "022", "021"]
+      },
+      {
+        "name": "AMBITO",
+        "type": "character",
+        "sample": ["Urbana", "Urbana", "Urbana"]
+      },
+      {
+        "name": "TIPOMZA",
+        "type": "character",
+        "sample": ["T韕ica", "T韕ica", "T韕ica"]
+      },
+      {
+        "name": "SECCION",
+        "type": "numeric",
+        "sample": ["2", "2", "2"]
+      },
+      {
+        "name": "area_intersect",
+        "type": "numeric",
+        "sample": [null, null, null]
+      },
+      {
+        "name": "NOM_ENT",
+        "type": "character",
+        "sample": ["Nuevo Le贸n", "Nuevo Le贸n", "Nuevo Le贸n"]
+      },
+      {
+        "name": "NOM_MUN",
+        "type": "character",
+        "sample": ["Abasolo", "Abasolo", "Abasolo"]
+      },
+      {
+        "name": "NOM_LOC",
+        "type": "character",
+        "sample": ["Abasolo", "Abasolo", "Abasolo"]
+      },
+      {
+        "name": "POBTOT",
+        "type": "numeric",
+        "sample": ["10", "7", "30"]
+      },
+      {
+        "name": "POBFEM",
+        "type": "numeric",
+        "sample": [null, null, "18"]
+      },
+      {
+        "name": "POBMAS",
+        "type": "numeric",
+        "sample": [null, null, "12"]
+      },
+      {
+        "name": "P_0A2",
+        "type": "numeric",
+        "sample": [null, null, null]
+      },
+      {
+        "name": "P_0A2_F",
+        "type": "numeric",
+        "sample": [null, null, null]
+      },
+      {
+        "name": "P_0A2_M",
+        "type": "numeric",
+        "sample": [null, null, null]
+      },
+      {
+        "name": "P_3YMAS",
+        "type": "numeric",
+        "sample": [null, null, "28"]
+      },
+      {
+        "name": "P_3YMAS_F",
+        "type": "numeric",
+        "sample": [null, null, "17"]
+      },
+      {
+        "name": "P_3YMAS_M",
+        "type": "numeric",
+        "sample": [null, null, "11"]
+      },
+      {
+        "name": "P_5YMAS",
+        "type": "numeric",
+        "sample": [null, null, "27"]
+      },
+      {
+        "name": "P_5YMAS_F",
+        "type": "numeric",
+        "sample": [null, null, "16"]
+      },
+      {
+        "name": "P_5YMAS_M",
+        "type": "numeric",
+        "sample": [null, null, "11"]
+      },
+      {
+        "name": "P_12YMAS",
+        "type": "numeric",
+        "sample": [null, null, "24"]
+      },
+      {
+        "name": "P_12YMAS_F",
+        "type": "numeric",
+        "sample": [null, null, "14"]
+      },
+      {
+        "name": "P_12YMAS_M",
+        "type": "numeric",
+        "sample": [null, null, "10"]
+      },
+      {
+        "name": "P_15YMAS",
+        "type": "numeric",
+        "sample": [null, null, "23"]
+      },
+      {
+        "name": "P_15YMAS_F",
+        "type": "numeric",
+        "sample": [null, null, "14"]
+      },
+      {
+        "name": "P_15YMAS_M",
+        "type": "numeric",
+        "sample": [null, null, "9"]
+      },
+      {
+        "name": "P_18YMAS",
+        "type": "numeric",
+        "sample": [null, null, "21"]
+      },
+      {
+        "name": "P_18YMAS_F",
+        "type": "numeric",
+        "sample": [null, null, "13"]
+      },
+      {
+        "name": "P_18YMAS_M",
+        "type": "numeric",
+        "sample": [null, null, "8"]
+      },
+      {
+        "name": "P_3A5",
+        "type": "numeric",
+        "sample": [null, null, null]
+      },
+      {
+        "name": "P_3A5_F",
+        "type": "numeric",
+        "sample": [null, null, null]
+      },
+      {
+        "name": "P_3A5_M",
+        "type": "numeric",
+        "sample": [null, null, "0"]
+      },
+      {
+        "name": "P_6A11",
+        "type": "numeric",
+        "sample": [null, null, null]
+      },
+      {
+        "name": "P_6A11_F",
+        "type": "numeric",
+        "sample": [null, null, null]
+      },
+      {
+        "name": "P_6A11_M",
+        "type": "numeric",
+        "sample": [null, null, null]
+      },
+      {
+        "name": "P_8A14",
+        "type": "numeric",
+        "sample": [null, null, null]
+      },
+      {
+        "name": "P_8A14_F",
+        "type": "numeric",
+        "sample": [null, null, "0"]
+      },
+      {
+        "name": "P_8A14_M",
+        "type": "numeric",
+        "sample": [null, null, null]
+      },
+      {
+        "name": "P_12A14",
+        "type": "numeric",
+        "sample": [null, null, null]
+      },
+      {
+        "name": "P_12A14_F",
+        "type": "numeric",
+        "sample": [null, null, "0"]
+      },
+      {
+        "name": "P_12A14_M",
+        "type": "numeric",
+        "sample": [null, null, null]
+      },
+      {
+        "name": "P_15A17",
+        "type": "numeric",
+        "sample": [null, null, null]
+      },
+      {
+        "name": "P_15A17_F",
+        "type": "numeric",
+        "sample": [null, null, null]
+      },
+      {
+        "name": "P_15A17_M",
+        "type": "numeric",
+        "sample": [null, null, null]
+      },
+      {
+        "name": "P_18A24",
+        "type": "numeric",
+        "sample": [null, null, "3"]
+      },
+      {
+        "name": "P_18A24_F",
+        "type": "numeric",
+        "sample": [null, null, "3"]
+      },
+      {
+        "name": "P_18A24_M",
+        "type": "numeric",
+        "sample": [null, null, "0"]
+      },
+      {
+        "name": "P_15A49_F",
+        "type": "numeric",
+        "sample": [null, null, "10"]
+      },
+      {
+        "name": "P_60YMAS",
+        "type": "numeric",
+        "sample": [null, null, "5"]
+      },
+      {
+        "name": "P_60YMAS_F",
+        "type": "numeric",
+        "sample": [null, null, "4"]
+      },
+      {
+        "name": "P_60YMAS_M",
+        "type": "numeric",
+        "sample": [null, null, null]
+      },
+      {
+        "name": "REL_H_M",
+        "type": "numeric",
+        "sample": [null, null, "66.67"]
+      },
+      {
+        "name": "POB0_14",
+        "type": "numeric",
+        "sample": [null, null, "7"]
+      },
+      {
+        "name": "POB15_64",
+        "type": "numeric",
+        "sample": [null, null, "19"]
+      },
+      {
+        "name": "POB65_MAS",
+        "type": "numeric",
+        "sample": [null, null, "4"]
+      },
+      {
+        "name": "PROM_HNV",
+        "type": "numeric",
+        "sample": [null, null, "3.29"]
+      },
+      {
+        "name": "PNACENT",
+        "type": "numeric",
+        "sample": [null, null, "29"]
+      },
+      {
+        "name": "PNACENT_F",
+        "type": "numeric",
+        "sample": [null, null, "18"]
+      },
+      {
+        "name": "PNACENT_M",
+        "type": "numeric",
+        "sample": [null, null, "11"]
+      },
+      {
+        "name": "PNACOE",
+        "type": "numeric",
+        "sample": [null, null, null]
+      },
+      {
+        "name": "PNACOE_F",
+        "type": "numeric",
+        "sample": [null, null, "0"]
+      },
+      {
+        "name": "PNACOE_M",
+        "type": "numeric",
+        "sample": [null, null, null]
+      },
+      {
+        "name": "PRES2015",
+        "type": "numeric",
+        "sample": [null, null, "27"]
+      },
+      {
+        "name": "PRES2015_F",
+        "type": "numeric",
+        "sample": [null, null, "16"]
+      },
+      {
+        "name": "PRES2015_M",
+        "type": "numeric",
+        "sample": [null, null, "11"]
+      },
+      {
+        "name": "PRESOE15",
+        "type": "numeric",
+        "sample": [null, null, "0"]
+      },
+      {
+        "name": "PRESOE15_F",
+        "type": "numeric",
+        "sample": [null, null, "0"]
+      },
+      {
+        "name": "PRESOE15_M",
+        "type": "numeric",
+        "sample": [null, null, "0"]
+      },
+      {
+        "name": "P3YM_HLI",
+        "type": "numeric",
+        "sample": [null, null, "0"]
+      },
+      {
+        "name": "P3YM_HLI_F",
+        "type": "numeric",
+        "sample": [null, null, "0"]
+      },
+      {
+        "name": "P3YM_HLI_M",
+        "type": "numeric",
+        "sample": [null, null, "0"]
+      },
+      {
+        "name": "P3HLINHE",
+        "type": "numeric",
+        "sample": [null, null, "0"]
+      },
+      {
+        "name": "P3HLINHE_F",
+        "type": "numeric",
+        "sample": [null, null, "0"]
+      },
+      {
+        "name": "P3HLINHE_M",
+        "type": "numeric",
+        "sample": [null, null, "0"]
+      },
+      {
+        "name": "P3HLI_HE",
+        "type": "numeric",
+        "sample": [null, null, "0"]
+      },
+      {
+        "name": "P3HLI_HE_F",
+        "type": "numeric",
+        "sample": [null, null, "0"]
+      },
+      {
+        "name": "P3HLI_HE_M",
+        "type": "numeric",
+        "sample": [null, null, "0"]
+      },
+      {
+        "name": "P5_HLI",
+        "type": "numeric",
+        "sample": [null, null, "0"]
+      },
+      {
+        "name": "P5_HLI_NHE",
+        "type": "numeric",
+        "sample": [null, null, "0"]
+      },
+      {
+        "name": "P5_HLI_HE",
+        "type": "numeric",
+        "sample": [null, null, "0"]
+      },
+      {
+        "name": "PHOG_IND",
+        "type": "numeric",
+        "sample": [null, null, "0"]
+      },
+      {
+        "name": "POB_AFRO",
+        "type": "numeric",
+        "sample": [null, null, "0"]
+      },
+      {
+        "name": "POB_AFRO_F",
+        "type": "numeric",
+        "sample": [null, null, "0"]
+      },
+      {
+        "name": "POB_AFRO_M",
+        "type": "numeric",
+        "sample": [null, null, "0"]
+      },
+      {
+        "name": "PCON_DISC",
+        "type": "numeric",
+        "sample": [null, null, "3"]
+      },
+      {
+        "name": "PCDISC_MOT",
+        "type": "numeric",
+        "sample": [null, null, null]
+      },
+      {
+        "name": "PCDISC_VIS",
+        "type": "numeric",
+        "sample": [null, null, "0"]
+      },
+      {
+        "name": "PCDISC_LENG",
+        "type": "numeric",
+        "sample": [null, null, null]
+      },
+      {
+        "name": "PCDISC_AUD",
+        "type": "numeric",
+        "sample": [null, null, null]
+      },
+      {
+        "name": "PCDISC_MOT2",
+        "type": "numeric",
+        "sample": [null, null, null]
+      },
+      {
+        "name": "PCDISC_MEN",
+        "type": "numeric",
+        "sample": [null, null, null]
+      },
+      {
+        "name": "PCON_LIMI",
+        "type": "numeric",
+        "sample": [null, null, null]
+      },
+      {
+        "name": "PCLIM_CSB",
+        "type": "numeric",
+        "sample": [null, null, "0"]
+      },
+      {
+        "name": "PCLIM_VIS",
+        "type": "numeric",
+        "sample": [null, null, null]
+      },
+      {
+        "name": "PCLIM_HACO",
+        "type": "numeric",
+        "sample": [null, null, "0"]
+      },
+      {
+        "name": "PCLIM_OAUD",
+        "type": "numeric",
+        "sample": [null, null, "0"]
+      },
+      {
+        "name": "PCLIM_MOT2",
+        "type": "numeric",
+        "sample": [null, null, "0"]
+      },
+      {
+        "name": "PCLIM_RE_CO",
+        "type": "numeric",
+        "sample": [null, null, null]
+      },
+      {
+        "name": "PCLIM_PMEN",
+        "type": "numeric",
+        "sample": [null, null, null]
+      },
+      {
+        "name": "PSIND_LIM",
+        "type": "numeric",
+        "sample": [null, null, "25"]
+      },
+      {
+        "name": "P3A5_NOA",
+        "type": "numeric",
+        "sample": [null, null, null]
+      },
+      {
+        "name": "P3A5_NOA_F",
+        "type": "numeric",
+        "sample": [null, null, null]
+      },
+      {
+        "name": "P3A5_NOA_M",
+        "type": "numeric",
+        "sample": [null, null, "0"]
+      },
+      {
+        "name": "P6A11_NOA",
+        "type": "numeric",
+        "sample": [null, null, "0"]
+      },
+      {
+        "name": "P6A11_NOAF",
+        "type": "numeric",
+        "sample": [null, null, "0"]
+      },
+      {
+        "name": "P6A11_NOAM",
+        "type": "numeric",
+        "sample": [null, null, "0"]
+      },
+      {
+        "name": "P12A14NOA",
+        "type": "numeric",
+        "sample": [null, null, "0"]
+      },
+      {
+        "name": "P12A14NOAF",
+        "type": "numeric",
+        "sample": [null, null, "0"]
+      },
+      {
+        "name": "P12A14NOAM",
+        "type": "numeric",
+        "sample": [null, null, "0"]
+      },
+      {
+        "name": "P15A17A",
+        "type": "numeric",
+        "sample": [null, null, null]
+      },
+      {
+        "name": "P15A17A_F",
+        "type": "numeric",
+        "sample": [null, null, null]
+      },
+      {
+        "name": "P15A17A_M",
+        "type": "numeric",
+        "sample": [null, null, "0"]
+      },
+      {
+        "name": "P18A24A",
+        "type": "numeric",
+        "sample": [null, null, null]
+      },
+      {
+        "name": "P18A24A_F",
+        "type": "numeric",
+        "sample": [null, null, null]
+      },
+      {
+        "name": "P18A24A_M",
+        "type": "numeric",
+        "sample": [null, null, "0"]
+      },
+      {
+        "name": "P8A14AN",
+        "type": "numeric",
+        "sample": [null, null, "0"]
+      },
+      {
+        "name": "P8A14AN_F",
+        "type": "numeric",
+        "sample": [null, null, "0"]
+      },
+      {
+        "name": "P8A14AN_M",
+        "type": "numeric",
+        "sample": [null, null, "0"]
+      },
+      {
+        "name": "P15YM_AN",
+        "type": "numeric",
+        "sample": [null, null, null]
+      },
+      {
+        "name": "P15YM_AN_F",
+        "type": "numeric",
+        "sample": [null, null, null]
+      },
+      {
+        "name": "P15YM_AN_M",
+        "type": "numeric",
+        "sample": [null, null, "0"]
+      },
+      {
+        "name": "P15YM_SE",
+        "type": "numeric",
+        "sample": [null, null, "3"]
+      },
+      {
+        "name": "P15YM_SE_F",
+        "type": "numeric",
+        "sample": [null, null, null]
+      },
+      {
+        "name": "P15YM_SE_M",
+        "type": "numeric",
+        "sample": [null, null, null]
+      },
+      {
+        "name": "P15PRI_IN",
+        "type": "numeric",
+        "sample": [null, null, "3"]
+      },
+      {
+        "name": "P15PRI_INF",
+        "type": "numeric",
+        "sample": [null, null, "3"]
+      },
+      {
+        "name": "P15PRI_INM",
+        "type": "numeric",
+        "sample": [null, null, "0"]
+      },
+      {
+        "name": "P15PRI_CO",
+        "type": "numeric",
+        "sample": [null, null, null]
+      },
+      {
+        "name": "P15PRI_COF",
+        "type": "numeric",
+        "sample": [null, null, "0"]
+      },
+      {
+        "name": "P15PRI_COM",
+        "type": "numeric",
+        "sample": [null, null, null]
+      },
+      {
+        "name": "P15SEC_IN",
+        "type": "numeric",
+        "sample": [null, null, "0"]
+      },
+      {
+        "name": "P15SEC_INF",
+        "type": "numeric",
+        "sample": [null, null, "0"]
+      },
+      {
+        "name": "P15SEC_INM",
+        "type": "numeric",
+        "sample": [null, null, "0"]
+      },
+      {
+        "name": "P15SEC_CO",
+        "type": "numeric",
+        "sample": [null, null, "10"]
+      },
+      {
+        "name": "P15SEC_COF",
+        "type": "numeric",
+        "sample": [null, null, "4"]
+      },
+      {
+        "name": "P15SEC_COM",
+        "type": "numeric",
+        "sample": [null, null, "6"]
+      },
+      {
+        "name": "P18YM_PB",
+        "type": "numeric",
+        "sample": [null, null, "4"]
+      },
+      {
+        "name": "P18YM_PB_F",
+        "type": "numeric",
+        "sample": [null, null, "4"]
+      },
+      {
+        "name": "P18YM_PB_M",
+        "type": "numeric",
+        "sample": [null, null, "0"]
+      },
+      {
+        "name": "GRAPROES",
+        "type": "numeric",
+        "sample": [null, null, "7.35"]
+      },
+      {
+        "name": "GRAPROES_F",
+        "type": "numeric",
+        "sample": [null, null, "7.36"]
+      },
+      {
+        "name": "GRAPROES_M",
+        "type": "numeric",
+        "sample": [null, null, "7.33"]
+      },
+      {
+        "name": "PEA",
+        "type": "numeric",
+        "sample": [null, null, "12"]
+      },
+      {
+        "name": "PEA_F",
+        "type": "numeric",
+        "sample": [null, null, "4"]
+      },
+      {
+        "name": "PEA_M",
+        "type": "numeric",
+        "sample": [null, null, "8"]
+      },
+      {
+        "name": "PE_INAC",
+        "type": "numeric",
+        "sample": [null, null, "12"]
+      },
+      {
+        "name": "PE_INAC_F",
+        "type": "numeric",
+        "sample": [null, null, "10"]
+      },
+      {
+        "name": "PE_INAC_M",
+        "type": "numeric",
+        "sample": [null, null, null]
+      },
+      {
+        "name": "POCUPADA",
+        "type": "numeric",
+        "sample": [null, null, "11"]
+      },
+      {
+        "name": "POCUPADA_F",
+        "type": "numeric",
+        "sample": [null, null, "4"]
+      },
+      {
+        "name": "POCUPADA_M",
+        "type": "numeric",
+        "sample": [null, null, "7"]
+      },
+      {
+        "name": "PDESOCUP",
+        "type": "numeric",
+        "sample": [null, null, null]
+      },
+      {
+        "name": "PDESOCUP_F",
+        "type": "numeric",
+        "sample": [null, null, "0"]
+      },
+      {
+        "name": "PDESOCUP_M",
+        "type": "numeric",
+        "sample": [null, null, null]
+      },
+      {
+        "name": "PSINDER",
+        "type": "numeric",
+        "sample": [null, null, "0"]
+      },
+      {
+        "name": "PDER_SS",
+        "type": "numeric",
+        "sample": [null, null, "30"]
+      },
+      {
+        "name": "PDER_IMSS",
+        "type": "numeric",
+        "sample": [null, null, "23"]
+      },
+      {
+        "name": "PDER_ISTE",
+        "type": "numeric",
+        "sample": [null, null, "0"]
+      },
+      {
+        "name": "PDER_ISTEE",
+        "type": "numeric",
+        "sample": [null, null, "0"]
+      },
+      {
+        "name": "PAFIL_PDOM",
+        "type": "numeric",
+        "sample": [null, null, "0"]
+      },
+      {
+        "name": "PDER_SEGP",
+        "type": "numeric",
+        "sample": [null, null, "7"]
+      },
+      {
+        "name": "PDER_IMSSB",
+        "type": "numeric",
+        "sample": [null, null, "0"]
+      },
+      {
+        "name": "PAFIL_IPRIV",
+        "type": "numeric",
+        "sample": [null, null, "0"]
+      },
+      {
+        "name": "PAFIL_OTRAI",
+        "type": "numeric",
+        "sample": [null, null, "0"]
+      },
+      {
+        "name": "P12YM_SOLT",
+        "type": "numeric",
+        "sample": [null, null, "11"]
+      },
+      {
+        "name": "P12YM_CASA",
+        "type": "numeric",
+        "sample": [null, null, "5"]
+      },
+      {
+        "name": "P12YM_SEPA",
+        "type": "numeric",
+        "sample": [null, null, "8"]
+      },
+      {
+        "name": "PCATOLICA",
+        "type": "numeric",
+        "sample": [null, null, "18"]
+      },
+      {
+        "name": "PRO_CRIEVA",
+        "type": "numeric",
+        "sample": [null, null, "12"]
+      },
+      {
+        "name": "POTRAS_REL",
+        "type": "numeric",
+        "sample": [null, null, "0"]
+      },
+      {
+        "name": "PSIN_RELIG",
+        "type": "numeric",
+        "sample": [null, null, "0"]
+      },
+      {
+        "name": "TOTHOG",
+        "type": "numeric",
+        "sample": [null, null, "8"]
+      },
+      {
+        "name": "HOGJEF_F",
+        "type": "numeric",
+        "sample": [null, null, "5"]
+      },
+      {
+        "name": "HOGJEF_M",
+        "type": "numeric",
+        "sample": [null, null, "3"]
+      },
+      {
+        "name": "POBHOG",
+        "type": "numeric",
+        "sample": [null, null, "30"]
+      },
+      {
+        "name": "PHOGJEF_F",
+        "type": "numeric",
+        "sample": [null, null, "17"]
+      },
+      {
+        "name": "PHOGJEF_M",
+        "type": "numeric",
+        "sample": [null, null, "13"]
+      },
+      {
+        "name": "VIVTOT",
+        "type": "numeric",
+        "sample": ["4", "2", "9"]
+      },
+      {
+        "name": "TVIVHAB",
+        "type": "numeric",
+        "sample": ["2", "2", "8"]
+      },
+      {
+        "name": "TVIVPAR",
+        "type": "numeric",
+        "sample": [null, null, "9"]
+      },
+      {
+        "name": "VIVPAR_HAB",
+        "type": "numeric",
+        "sample": [null, null, "8"]
+      },
+      {
+        "name": "VIVPARH_CV",
+        "type": "numeric",
+        "sample": [null, null, "8"]
+      },
+      {
+        "name": "TVIVPARHAB",
+        "type": "numeric",
+        "sample": [null, null, "8"]
+      },
+      {
+        "name": "VIVPAR_DES",
+        "type": "numeric",
+        "sample": [null, null, null]
+      },
+      {
+        "name": "VIVPAR_UT",
+        "type": "numeric",
+        "sample": [null, null, "0"]
+      },
+      {
+        "name": "OCUPVIVPAR",
+        "type": "numeric",
+        "sample": [null, null, "30"]
+      },
+      {
+        "name": "PROM_OCUP",
+        "type": "numeric",
+        "sample": [null, null, "3.75"]
+      },
+      {
+        "name": "PRO_OCUP_C",
+        "type": "numeric",
+        "sample": [null, null, "0.97"]
+      },
+      {
+        "name": "VPH_PISODT",
+        "type": "numeric",
+        "sample": [null, null, "8"]
+      },
+      {
+        "name": "VPH_PISOTI",
+        "type": "numeric",
+        "sample": [null, null, "0"]
+      },
+      {
+        "name": "VPH_1DOR",
+        "type": "numeric",
+        "sample": [null, null, "3"]
+      },
+      {
+        "name": "VPH_2YMASD",
+        "type": "numeric",
+        "sample": [null, null, "5"]
+      },
+      {
+        "name": "VPH_1CUART",
+        "type": "numeric",
+        "sample": [null, null, null]
+      },
+      {
+        "name": "VPH_2CUART",
+        "type": "numeric",
+        "sample": [null, null, null]
+      },
+      {
+        "name": "VPH_3YMASC",
+        "type": "numeric",
+        "sample": [null, null, "6"]
+      },
+      {
+        "name": "VPH_C_ELEC",
+        "type": "numeric",
+        "sample": [null, null, "8"]
+      },
+      {
+        "name": "VPH_S_ELEC",
+        "type": "numeric",
+        "sample": [null, null, "0"]
+      },
+      {
+        "name": "VPH_AGUADV",
+        "type": "numeric",
+        "sample": [null, null, "8"]
+      },
+      {
+        "name": "VPH_AEASP",
+        "type": "numeric",
+        "sample": [null, null, "8"]
+      },
+      {
+        "name": "VPH_AGUAFV",
+        "type": "numeric",
+        "sample": [null, null, "0"]
+      },
+      {
+        "name": "VPH_TINACO",
+        "type": "numeric",
+        "sample": [null, null, "0"]
+      },
+      {
+        "name": "VPH_CISTER",
+        "type": "numeric",
+        "sample": [null, null, "0"]
+      },
+      {
+        "name": "VPH_EXCSA",
+        "type": "numeric",
+        "sample": [null, null, "8"]
+      },
+      {
+        "name": "VPH_LETR",
+        "type": "numeric",
+        "sample": [null, null, "0"]
+      },
+      {
+        "name": "VPH_DRENAJ",
+        "type": "numeric",
+        "sample": [null, null, "8"]
+      },
+      {
+        "name": "VPH_NODREN",
+        "type": "numeric",
+        "sample": [null, null, "0"]
+      },
+      {
+        "name": "VPH_C_SERV",
+        "type": "numeric",
+        "sample": [null, null, "8"]
+      },
+      {
+        "name": "VPH_NDEAED",
+        "type": "numeric",
+        "sample": [null, null, "0"]
+      },
+      {
+        "name": "VPH_DSADMA",
+        "type": "numeric",
+        "sample": [null, null, "8"]
+      },
+      {
+        "name": "VPH_NDACMM",
+        "type": "numeric",
+        "sample": [null, null, "5"]
+      },
+      {
+        "name": "VPH_SNBIEN",
+        "type": "numeric",
+        "sample": [null, null, "0"]
+      },
+      {
+        "name": "VPH_REFRI",
+        "type": "numeric",
+        "sample": [null, null, "7"]
+      },
+      {
+        "name": "VPH_LAVAD",
+        "type": "numeric",
+        "sample": [null, null, "6"]
+      },
+      {
+        "name": "VPH_HMICRO",
+        "type": "numeric",
+        "sample": [null, null, "6"]
+      },
+      {
+        "name": "VPH_AUTOM",
+        "type": "numeric",
+        "sample": [null, null, "3"]
+      },
+      {
+        "name": "VPH_MOTO",
+        "type": "numeric",
+        "sample": [null, null, "0"]
+      },
+      {
+        "name": "VPH_BICI",
+        "type": "numeric",
+        "sample": [null, null, "0"]
+      },
+      {
+        "name": "VPH_RADIO",
+        "type": "numeric",
+        "sample": [null, null, "4"]
+      },
+      {
+        "name": "VPH_TV",
+        "type": "numeric",
+        "sample": [null, null, "8"]
+      },
+      {
+        "name": "VPH_PC",
+        "type": "numeric",
+        "sample": [null, null, null]
+      },
+      {
+        "name": "VPH_TELEF",
+        "type": "numeric",
+        "sample": [null, null, "0"]
+      },
+      {
+        "name": "VPH_CEL",
+        "type": "numeric",
+        "sample": [null, null, "5"]
+      },
+      {
+        "name": "VPH_INTER",
+        "type": "numeric",
+        "sample": [null, null, "3"]
+      },
+      {
+        "name": "VPH_STVP",
+        "type": "numeric",
+        "sample": [null, null, null]
+      },
+      {
+        "name": "VPH_SPMVPI",
+        "type": "numeric",
+        "sample": [null, null, null]
+      },
+      {
+        "name": "VPH_CVJ",
+        "type": "numeric",
+        "sample": [null, null, null]
+      },
+      {
+        "name": "VPH_SINRTV",
+        "type": "numeric",
+        "sample": [null, null, "0"]
+      },
+      {
+        "name": "VPH_SINLTC",
+        "type": "numeric",
+        "sample": [null, null, "3"]
+      },
+      {
+        "name": "VPH_SINCINT",
+        "type": "numeric",
+        "sample": [null, null, "5"]
+      },
+      {
+        "name": "VPH_SINTIC",
+        "type": "numeric",
+        "sample": [null, null, "0"]
+      },
+      {
+        "name": "geometry",
+        "type": "geometry",
+        "sample": "POLYGON/POINT..."
+      }
+    ]
+  },
+  "municipios_lista": {
+    "class": "data.frame",
+    "rows": 51,
+    "cols": 2,
+    "size_mb": "0 Mb",
+    "columns": [
+      {
+        "name": "MUNICIPIO",
+        "type": "numeric",
+        "sample": ["1", "2", "4"]
+      },
+      {
+        "name": "NOMBRE",
+        "type": "character",
+        "sample": ["ABASOLO", "AGUALEGUAS", "ALLENDE"]
+      }
+    ]
+  },
+  "cant_votos_nl": {
+    "class": ["tbl_df", "tbl", "data.frame"],
+    "rows": 314449,
+    "cols": 6,
+    "size_mb": "17 Mb",
+    "columns": [
+      {
+        "name": "seccion",
+        "type": "character",
+        "sample": ["1", "1", "1"]
+      },
+      {
+        "name": "partido",
+        "type": "character",
+        "sample": ["PAN", "PRI", "VERDE"]
+      },
+      {
+        "name": "votos",
+        "type": "numeric",
+        "sample": ["104", "2", "5"]
+      },
+      {
+        "name": "eleccion",
+        "type": "character",
+        "sample": ["Alcalde", "Alcalde", "Alcalde"]
+      },
+      {
+        "name": "a帽o",
+        "type": "numeric",
+        "sample": ["2024", "2024", "2024"]
+      },
+      {
+        "name": "eleccion_a帽o_id",
+        "type": "character",
+        "sample": ["alcalde_24", "alcalde_24", "alcalde_24"]
+      }
+    ]
+  },
+  "cant_votos": {
+    "class": ["tbl_df", "tbl", "data.frame"],
+    "rows": 317570,
+    "cols": 4,
+    "size_mb": "9.8 Mb",
+    "columns": [
+      {
+        "name": "seccion",
+        "type": "character",
+        "sample": ["1", "1", "1"]
+      },
+      {
+        "name": "votos",
+        "type": "numeric",
+        "sample": ["7", "53", "197"]
+      },
+      {
+        "name": "partido",
+        "type": "character",
+        "sample": ["morena", "pan", "pri"]
+      },
+      {
+        "name": "eleccion",
+        "type": "character",
+        "sample": ["fed15", "fed15", "fed15"]
+      }
+    ]
+  },
+  "base_ganadores": {
+    "class": ["spec_tbl_df", "tbl_df", "tbl", "data.frame"],
+    "rows": 2887,
+    "cols": 20,
+    "size_mb": "0.5 Mb",
+    "columns": [
+      {
+        "name": "poblacion",
+        "type": "numeric",
+        "sample": ["1033", "1479", "870"]
+      },
+      {
+        "name": "seccion",
+        "type": "numeric",
+        "sample": ["1", "2", "3"]
+      },
+      {
+        "name": "gober_15",
+        "type": "character",
+        "sample": ["INDEPE", "PRI", "PAN"]
+      },
+      {
+        "name": "alcalde_15",
+        "type": "character",
+        "sample": ["MC", "PRD", "PAN"]
+      },
+      {
+        "name": "alcalde_24",
+        "type": "character",
+        "sample": ["MC", "MC", "PAN"]
+      },
+      {
+        "name": "dip_local_15",
+        "type": "character",
+        "sample": ["PRI", "PRI", "PAN"]
+      },
+      {
+        "name": "dip_fed_15",
+        "type": "character",
+        "sample": ["PRI", "PRI", "PAN"]
+      },
+      {
+        "name": "dip_local_18",
+        "type": "character",
+        "sample": ["PRI", "PRI", "PRI"]
+      },
+      {
+        "name": "senado_18",
+        "type": "character",
+        "sample": ["MC", "MC", "PRI"]
+      },
+      {
+        "name": "alcalde_18",
+        "type": "character",
+        "sample": ["PRI", "INDEPE", "PAN"]
+      },
+      {
+        "name": "alcalde_21",
+        "type": "character",
+        "sample": ["PAN", "INDEPE", "PAN"]
+      },
+      {
+        "name": "dip_local_21",
+        "type": "character",
+        "sample": ["PAN", "MC", "PAN"]
+      },
+      {
+        "name": "gober_21",
+        "type": "character",
+        "sample": ["MC", "MC", "PAN"]
+      },
+      {
+        "name": "dip_fed_21",
+        "type": "character",
+        "sample": ["PAN", "MC", "PAN"]
+      },
+      {
+        "name": "dip_fed18",
+        "type": "character",
+        "sample": ["PRI", "PRI", "PAN"]
+      },
+      {
+        "name": "dip_fed24",
+        "type": "character",
+        "sample": ["MC", "MC", "PAN"]
+      },
+      {
+        "name": "dip_local_24",
+        "type": "character",
+        "sample": ["MC", "MC", "MC"]
+      },
+      {
+        "name": "pres_18",
+        "type": "character",
+        "sample": ["morena", "morena", "PAN"]
+      },
+      {
+        "name": "sen_24",
+        "type": "character",
+        "sample": ["MC", "MC", "PAN"]
+      },
+      {
+        "name": "pres_24",
+        "type": "character",
+        "sample": ["morena", "morena", "PAN"]
+      }
+    ]
+  },
+  "res_trab": {
+    "class": ["spec_tbl_df", "tbl_df", "tbl", "data.frame"],
+    "rows": 323344,
+    "cols": 4,
+    "size_mb": "10 Mb",
+    "columns": [
+      {
+        "name": "seccion",
+        "type": "character",
+        "sample": ["1", "1", "1"]
+      },
+      {
+        "name": "proporcion",
+        "type": "numeric",
+        "sample": ["0.009", "0.106", "0.319"]
+      },
+      {
+        "name": "partido",
+        "type": "character",
+        "sample": ["morena", "pan", "pri"]
+      },
+      {
+        "name": "eleccion",
+        "type": "character",
+        "sample": ["gob15", "gob15", "gob15"]
+      }
+    ]
+  },
+  "edades": {
+    "class": ["tbl_df", "tbl", "data.frame"],
+    "rows": 2915,
+    "cols": 16,
+    "size_mb": "0.5 Mb",
+    "columns": [
+      {
+        "name": "seccion",
+        "type": "character",
+        "sample": ["0", "356", "357"]
+      },
+      {
+        "name": "padron_total",
+        "type": "numeric",
+        "sample": ["34491", "1864", "1609"]
+      },
+      {
+        "name": "hombres_18_24",
+        "type": "numeric",
+        "sample": ["712", "151", "139"]
+      },
+      {
+        "name": "mujeres_18_24",
+        "type": "numeric",
+        "sample": ["734", "156", "128"]
+      },
+      {
+        "name": "hombres_25_29",
+        "type": "numeric",
+        "sample": ["792", "112", "94"]
+      },
+      {
+        "name": "mujeres_25_29",
+        "type": "numeric",
+        "sample": ["831", "102", "101"]
+      },
+      {
+        "name": "hombres_30_39",
+        "type": "numeric",
+        "sample": ["2620", "214", "129"]
+      },
+      {
+        "name": "mujeres_30_39",
+        "type": "numeric",
+        "sample": ["3110", "229", "143"]
+      },
+      {
+        "name": "hombres_40_49",
+        "type": "numeric",
+        "sample": ["5034", "201", "168"]
+      },
+      {
+        "name": "mujeres_40_49",
+        "type": "numeric",
+        "sample": ["5932", "188", "145"]
+      },
+      {
+        "name": "hombres_50_59",
+        "type": "numeric",
+        "sample": ["4701", "105", "125"]
+      },
+      {
+        "name": "mujeres_50_59",
+        "type": "numeric",
+        "sample": ["4974", "93", "112"]
+      },
+      {
+        "name": "hombres_mayores",
+        "type": "numeric",
+        "sample": ["2650", "133", "142"]
+      },
+      {
+        "name": "mujeres_mayores",
+        "type": "numeric",
+        "sample": ["2401", "180", "183"]
+      },
+      {
+        "name": "seccion_nueva",
+        "type": "numeric",
+        "sample": [null, null, null]
+      },
+      {
+        "name": "cant_divisiones",
+        "type": "numeric",
+        "sample": ["1", "1", "1"]
+      }
+    ]
+  },
+  "colonias": {
+    "class": ["tbl_df", "tbl", "data.frame"],
+    "rows": 10082,
+    "cols": 7,
+    "size_mb": "0.9 Mb",
+    "columns": [
+      {
+        "name": "ENTIDAD",
+        "type": "numeric",
+        "sample": ["19", "19", "19"]
+      },
+      {
+        "name": "DISTRITO LOCAL",
+        "type": "numeric",
+        "sample": ["1", "1", "1"]
+      },
+      {
+        "name": "MUNICIPIO",
+        "type": "numeric",
+        "sample": ["40", "40", "40"]
+      },
+      {
+        "name": "NOMBRE DE MUNICIPIO",
+        "type": "character",
+        "sample": ["MONTERREY", "MONTERREY", "MONTERREY"]
+      },
+      {
+        "name": "SECCI脫N",
+        "type": "numeric",
+        "sample": ["1432", "1433", "1434"]
+      },
+      {
+        "name": "COLONIA",
+        "type": "character",
+        "sample": ["FOMERREY 35 (TIERRA PROPIA)", "FOMERREY 35 (TIERRA PROPIA)", "CROC"]
+      },
+      {
+        "name": "CP",
+        "type": "numeric",
+        "sample": ["64229", "64229", "64200"]
+      }
+    ]
+  },
+  "participacion": {
+    "class": ["sf", "data.frame"],
+    "rows": 2912,
+    "cols": 14,
+    "size_mb": "6.2 Mb",
+    "crs": "WGS 84 / UTM zone 14N",
+    "columns": [
+      {
+        "name": "ID",
+        "type": "numeric",
+        "sample": ["312", "313", "314"]
+      },
+      {
+        "name": "ENTIDAD",
+        "type": "numeric",
+        "sample": ["19", "19", "19"]
+      },
+      {
+        "name": "DISTRITO",
+        "type": "numeric",
+        "sample": ["1", "1", "1"]
+      },
+      {
+        "name": "DISTRITO_L",
+        "type": "numeric",
+        "sample": ["18", "18", "18"]
+      },
+      {
+        "name": "MUNICIPIO",
+        "type": "numeric",
+        "sample": ["19", "19", "19"]
+      },
+      {
+        "name": "SECCION",
+        "type": "character",
+        "sample": ["356", "357", "358"]
+      },
+      {
+        "name": "TIPO",
+        "type": "numeric",
+        "sample": ["2", "2", "2"]
+      },
+      {
+        "name": "CONTROL",
+        "type": "numeric",
+        "sample": ["1642", "1643", "1644"]
+      },
+      {
+        "name": "GEOMETRY1_",
+        "type": "character",
+        "sample": [null, null, null]
+      },
+      {
+        "name": "votos",
+        "type": "numeric",
+        "sample": ["815", "248", "255"]
+      },
+      {
+        "name": "lista",
+        "type": "numeric",
+        "sample": ["1855", "1596", "1505"]
+      },
+      {
+        "name": "participacion",
+        "type": "numeric",
+        "sample": ["0.439353099730458", "0.155388471177945", "0.169435215946844"]
+      },
+      {
+        "name": "NOMBRE",
+        "type": "character",
+        "sample": ["SAN PEDRO GARZA GARCIA", "SAN PEDRO GARZA GARCIA", "SAN PEDRO GARZA GARCIA"]
+      },
+      {
+        "name": "geometry",
+        "type": "geometry",
+        "sample": "POLYGON/POINT..."
+      }
+    ]
+  },
+  "data_secc_cpv2020": {
+    "class": ["spec_tbl_df", "tbl_df", "tbl", "data.frame"],
+    "rows": 2818,
+    "cols": 227,
+    "size_mb": "5 Mb",
+    "columns": [
+      {
+        "name": "ID",
+        "type": "numeric",
+        "sample": ["1677", "174", "29"]
+      },
+      {
+        "name": "ENTIDAD",
+        "type": "numeric",
+        "sample": ["19", "19", "19"]
+      },
+      {
+        "name": "DISTRITO",
+        "type": "numeric",
+        "sample": ["7", "7", "7"]
+      },
+      {
+        "name": "MUNICIPIO",
+        "type": "numeric",
+        "sample": ["1", "1", "2"]
+      },
+      {
+        "name": "SECCION",
+        "type": "numeric",
+        "sample": ["1", "2", "3"]
+      },
+      {
+        "name": "TIPO",
+        "type": "numeric",
+        "sample": ["3", "3", "3"]
+      },
+      {
+        "name": "POBTOT",
+        "type": "numeric",
+        "sample": ["1320", "1663", "784"]
+      },
+      {
+        "name": "POBFEM",
+        "type": "numeric",
+        "sample": ["674", "863", "401"]
+      },
+      {
+        "name": "POBMAS",
+        "type": "numeric",
+        "sample": ["646", "800", "383"]
+      },
+      {
+        "name": "P_0A2",
+        "type": "numeric",
+        "sample": ["75", "90", "25"]
+      },
+      {
+        "name": "P_0A2_F",
+        "type": "numeric",
+        "sample": ["41", "47", "17"]
+      },
+      {
+        "name": "P_0A2_M",
+        "type": "numeric",
+        "sample": ["34", "43", "8"]
+      },
+      {
+        "name": "P_0A17",
+        "type": "numeric",
+        "sample": ["462", "509", "203"]
+      },
+      {
+        "name": "P_3YMAS",
+        "type": "numeric",
+        "sample": ["1245", "1571", "759"]
+      },
+      {
+        "name": "P_3YMAS_F",
+        "type": "numeric",
+        "sample": ["633", "815", "384"]
+      },
+      {
+        "name": "P_3YMAS_M",
+        "type": "numeric",
+        "sample": ["612", "756", "375"]
+      },
+      {
+        "name": "P_5YMAS",
+        "type": "numeric",
+        "sample": ["1188", "1517", "738"]
+      },
+      {
+        "name": "P_5YMAS_F",
+        "type": "numeric",
+        "sample": ["603", "781", "372"]
+      },
+      {
+        "name": "P_5YMAS_M",
+        "type": "numeric",
+        "sample": ["585", "736", "366"]
+      },
+      {
+        "name": "P_12YMAS",
+        "type": "numeric",
+        "sample": ["1007", "1326", "661"]
+      },
+      {
+        "name": "P_12YMAS_F",
+        "type": "numeric",
+        "sample": ["522", "674", "330"]
+      },
+      {
+        "name": "P_12YMAS_M",
+        "type": "numeric",
+        "sample": ["485", "652", "331"]
+      },
+      {
+        "name": "P_15YMAS",
+        "type": "numeric",
+        "sample": ["937", "1242", "622"]
+      },
+      {
+        "name": "P_15YMAS_F",
+        "type": "numeric",
+        "sample": ["481", "635", "308"]
+      },
+      {
+        "name": "P_15YMAS_M",
+        "type": "numeric",
+        "sample": ["456", "607", "314"]
+      },
+      {
+        "name": "P_18YMAS",
+        "type": "numeric",
+        "sample": ["858", "1152", "581"]
+      },
+      {
+        "name": "P_18YMAS_F",
+        "type": "numeric",
+        "sample": ["437", "589", "294"]
+      },
+      {
+        "name": "P_18YMAS_M",
+        "type": "numeric",
+        "sample": ["421", "563", "287"]
+      },
+      {
+        "name": "P_3A5",
+        "type": "numeric",
+        "sample": ["83", "84", "33"]
+      },
+      {
+        "name": "P_3A5_F",
+        "type": "numeric",
+        "sample": ["43", "49", "20"]
+      },
+      {
+        "name": "P_3A5_M",
+        "type": "numeric",
+        "sample": ["40", "35", "13"]
+      },
+      {
+        "name": "P_6A11",
+        "type": "numeric",
+        "sample": ["155", "161", "65"]
+      },
+      {
+        "name": "P_6A11_F",
+        "type": "numeric",
+        "sample": ["68", "92", "34"]
+      },
+      {
+        "name": "P_6A11_M",
+        "type": "numeric",
+        "sample": ["87", "69", "31"]
+      },
+      {
+        "name": "P_8A14",
+        "type": "numeric",
+        "sample": ["176", "196", "84"]
+      },
+      {
+        "name": "P_8A14_F",
+        "type": "numeric",
+        "sample": ["86", "100", "47"]
+      },
+      {
+        "name": "P_8A14_M",
+        "type": "numeric",
+        "sample": ["90", "96", "37"]
+      },
+      {
+        "name": "P_12A14",
+        "type": "numeric",
+        "sample": ["70", "84", "39"]
+      },
+      {
+        "name": "P_12A14_F",
+        "type": "numeric",
+        "sample": ["41", "39", "22"]
+      },
+      {
+        "name": "P_12A14_M",
+        "type": "numeric",
+        "sample": ["29", "45", "17"]
+      },
+      {
+        "name": "P_15A17",
+        "type": "numeric",
+        "sample": ["79", "90", "41"]
+      },
+      {
+        "name": "P_15A17_F",
+        "type": "numeric",
+        "sample": ["44", "46", "14"]
+      },
+      {
+        "name": "P_15A17_M",
+        "type": "numeric",
+        "sample": ["35", "44", "27"]
+      },
+      {
+        "name": "P_18A24",
+        "type": "numeric",
+        "sample": ["156", "201", "71"]
+      },
+      {
+        "name": "P_18A24_F",
+        "type": "numeric",
+        "sample": ["86", "105", "35"]
+      },
+      {
+        "name": "P_18A24_M",
+        "type": "numeric",
+        "sample": ["70", "96", "36"]
+      },
+      {
+        "name": "P_15A49_F",
+        "type": "numeric",
+        "sample": ["360", "419", "175"]
+      },
+      {
+        "name": "P_60YMAS",
+        "type": "numeric",
+        "sample": ["121", "209", "160"]
+      },
+      {
+        "name": "P_60YMAS_F",
+        "type": "numeric",
+        "sample": ["58", "116", "82"]
+      },
+      {
+        "name": "P_60YMAS_M",
+        "type": "numeric",
+        "sample": ["63", "93", "78"]
+      },
+      {
+        "name": "REL_H_M",
+        "type": "numeric",
+        "sample": ["95.85", "92.7", "95.51"]
+      },
+      {
+        "name": "POB0_14",
+        "type": "numeric",
+        "sample": ["383", "419", "162"]
+      },
+      {
+        "name": "POB15_64",
+        "type": "numeric",
+        "sample": ["852", "1109", "511"]
+      },
+      {
+        "name": "POB65_MAS",
+        "type": "numeric",
+        "sample": ["85", "133", "111"]
+      },
+      {
+        "name": "POB_EDADNE",
+        "type": "numeric",
+        "sample": ["0", "2", "0"]
+      },
+      {
+        "name": "PROM_HNV",
+        "type": "numeric",
+        "sample": ["2.12", "2.21", "2.6"]
+      },
+      {
+        "name": "PNACENT",
+        "type": "numeric",
+        "sample": ["1076", "1408", "610"]
+      },
+      {
+        "name": "PNACENT_F",
+        "type": "numeric",
+        "sample": ["547", "719", "311"]
+      },
+      {
+        "name": "PNACENT_M",
+        "type": "numeric",
+        "sample": ["529", "689", "299"]
+      },
+      {
+        "name": "PNACOE",
+        "type": "numeric",
+        "sample": ["241", "226", "152"]
+      },
+      {
+        "name": "PNACOE_F",
+        "type": "numeric",
+        "sample": ["126", "124", "77"]
+      },
+      {
+        "name": "PNACOE_M",
+        "type": "numeric",
+        "sample": ["115", "102", "75"]
+      },
+      {
+        "name": "PRES2015",
+        "type": "numeric",
+        "sample": ["1165", "1481", "704"]
+      },
+      {
+        "name": "PRES2015_F",
+        "type": "numeric",
+        "sample": ["590", "757", "356"]
+      },
+      {
+        "name": "PRES2015_M",
+        "type": "numeric",
+        "sample": ["575", "724", "348"]
+      },
+      {
+        "name": "PRESOE15",
+        "type": "numeric",
+        "sample": ["23", "22", "22"]
+      },
+      {
+        "name": "PRESOE15_F",
+        "type": "numeric",
+        "sample": ["13", "14", "12"]
+      },
+      {
+        "name": "PRESOE15_M",
+        "type": "numeric",
+        "sample": ["10", "8", "10"]
+      },
+      {
+        "name": "P3YM_HLI",
+        "type": "numeric",
+        "sample": ["11", "1", "0"]
+      },
+      {
+        "name": "P3YM_HLI_F",
+        "type": "numeric",
+        "sample": ["5", "1", "0"]
+      },
+      {
+        "name": "P3YM_HLI_M",
+        "type": "numeric",
+        "sample": ["6", "0", "0"]
+      },
+      {
+        "name": "P3HLINHE",
+        "type": "numeric",
+        "sample": ["0", "0", "0"]
+      },
+      {
+        "name": "P3HLINHE_F",
+        "type": "numeric",
+        "sample": ["0", "0", "0"]
+      },
+      {
+        "name": "P3HLINHE_M",
+        "type": "numeric",
+        "sample": ["0", "0", "0"]
+      },
+      {
+        "name": "P3HLI_HE",
+        "type": "numeric",
+        "sample": ["11", "1", "0"]
+      },
+      {
+        "name": "P3HLI_HE_F",
+        "type": "numeric",
+        "sample": ["5", "1", "0"]
+      },
+      {
+        "name": "P3HLI_HE_M",
+        "type": "numeric",
+        "sample": ["6", "0", "0"]
+      },
+      {
+        "name": "P5_HLI",
+        "type": "numeric",
+        "sample": ["11", "1", "0"]
+      },
+      {
+        "name": "P5_HLI_NHE",
+        "type": "numeric",
+        "sample": ["0", "0", "0"]
+      },
+      {
+        "name": "P5_HLI_HE",
+        "type": "numeric",
+        "sample": ["11", "1", "0"]
+      },
+      {
+        "name": "PHOG_IND",
+        "type": "numeric",
+        "sample": ["17", "6", "0"]
+      },
+      {
+        "name": "POB_AFRO",
+        "type": "numeric",
+        "sample": ["5", "2", "2"]
+      },
+      {
+        "name": "POB_AFRO_F",
+        "type": "numeric",
+        "sample": ["3", "1", "0"]
+      },
+      {
+        "name": "POB_AFRO_M",
+        "type": "numeric",
+        "sample": ["2", "1", "2"]
+      },
+      {
+        "name": "PCON_DISC",
+        "type": "numeric",
+        "sample": ["55", "85", "58"]
+      },
+      {
+        "name": "PCDISC_MOT",
+        "type": "numeric",
+        "sample": ["26", "32", "29"]
+      },
+      {
+        "name": "PCDISC_VIS",
+        "type": "numeric",
+        "sample": ["26", "46", "19"]
+      },
+      {
+        "name": "PCDISC_LEN",
+        "type": "numeric",
+        "sample": ["8", "9", "6"]
+      },
+      {
+        "name": "PCDISC_AUD",
+        "type": "numeric",
+        "sample": ["12", "16", "9"]
+      },
+      {
+        "name": "PCDISC_M_A",
+        "type": "numeric",
+        "sample": ["10", "16", "9"]
+      },
+      {
+        "name": "PCDISC_MEN",
+        "type": "numeric",
+        "sample": ["7", "12", "12"]
+      },
+      {
+        "name": "PCON_LIMI",
+        "type": "numeric",
+        "sample": ["107", "163", "115"]
+      },
+      {
+        "name": "PCLIM_CSB",
+        "type": "numeric",
+        "sample": ["39", "53", "57"]
+      },
+      {
+        "name": "PCLIM_VIS",
+        "type": "numeric",
+        "sample": ["67", "110", "71"]
+      },
+      {
+        "name": "PCLIM_HACO",
+        "type": "numeric",
+        "sample": ["1", "8", "3"]
+      },
+      {
+        "name": "PCLIM_OAUD",
+        "type": "numeric",
+        "sample": ["19", "33", "21"]
+      },
+      {
+        "name": "PCLIM_MOT2",
+        "type": "numeric",
+        "sample": ["1", "9", "5"]
+      },
+      {
+        "name": "PCLIM_RE_C",
+        "type": "numeric",
+        "sample": ["22", "25", "16"]
+      },
+      {
+        "name": "PCLIM_PMEN",
+        "type": "numeric",
+        "sample": ["8", "14", "7"]
+      },
+      {
+        "name": "PSIND_LIM",
+        "type": "numeric",
+        "sample": ["1157", "1398", "609"]
+      },
+      {
+        "name": "P3A5_NOA",
+        "type": "numeric",
+        "sample": ["25", "27", "4"]
+      },
+      {
+        "name": "P3A5_NOA_F",
+        "type": "numeric",
+        "sample": ["14", "17", "2"]
+      },
+      {
+        "name": "P3A5_NOA_M",
+        "type": "numeric",
+        "sample": ["11", "10", "2"]
+      },
+      {
+        "name": "P6A11_NOA",
+        "type": "numeric",
+        "sample": ["10", "12", "1"]
+      },
+      {
+        "name": "P6A11_NOAF",
+        "type": "numeric",
+        "sample": ["5", "9", "0"]
+      },
+      {
+        "name": "P6A11_NOAM",
+        "type": "numeric",
+        "sample": ["5", "3", "1"]
+      },
+      {
+        "name": "P12A14NOA",
+        "type": "numeric",
+        "sample": ["4", "9", "1"]
+      },
+      {
+        "name": "P12A14NOAF",
+        "type": "numeric",
+        "sample": ["2", "6", "0"]
+      },
+      {
+        "name": "P12A14NOAM",
+        "type": "numeric",
+        "sample": ["2", "3", "1"]
+      },
+      {
+        "name": "P15A17A",
+        "type": "numeric",
+        "sample": ["57", "59", "29"]
+      },
+      {
+        "name": "P15A17A_F",
+        "type": "numeric",
+        "sample": ["36", "32", "10"]
+      },
+      {
+        "name": "P15A17A_M",
+        "type": "numeric",
+        "sample": ["21", "27", "19"]
+      },
+      {
+        "name": "P18A24A",
+        "type": "numeric",
+        "sample": ["43", "52", "19"]
+      },
+      {
+        "name": "P18A24A_F",
+        "type": "numeric",
+        "sample": ["27", "25", "11"]
+      },
+      {
+        "name": "P18A24A_M",
+        "type": "numeric",
+        "sample": ["16", "27", "8"]
+      },
+      {
+        "name": "P8A14AN",
+        "type": "numeric",
+        "sample": ["1", "2", "1"]
+      },
+      {
+        "name": "P8A14AN_F",
+        "type": "numeric",
+        "sample": ["0", "0", "0"]
+      },
+      {
+        "name": "P8A14AN_M",
+        "type": "numeric",
+        "sample": ["1", "2", "1"]
+      },
+      {
+        "name": "P15YM_AN",
+        "type": "numeric",
+        "sample": ["20", "28", "37"]
+      },
+      {
+        "name": "P15YM_AN_F",
+        "type": "numeric",
+        "sample": ["8", "17", "13"]
+      },
+      {
+        "name": "P15YM_AN_M",
+        "type": "numeric",
+        "sample": ["12", "11", "24"]
+      },
+      {
+        "name": "P15YM_SE",
+        "type": "numeric",
+        "sample": ["27", "34", "43"]
+      },
+      {
+        "name": "P15YM_SE_F",
+        "type": "numeric",
+        "sample": ["10", "18", "15"]
+      },
+      {
+        "name": "P15YM_SE_M",
+        "type": "numeric",
+        "sample": ["17", "16", "28"]
+      },
+      {
+        "name": "P15PRI_IN",
+        "type": "numeric",
+        "sample": ["57", "69", "82"]
+      },
+      {
+        "name": "P15PRI_INF",
+        "type": "numeric",
+        "sample": ["24", "41", "35"]
+      },
+      {
+        "name": "P15PRI_INM",
+        "type": "numeric",
+        "sample": ["33", "28", "47"]
+      },
+      {
+        "name": "P15PRI_CO",
+        "type": "numeric",
+        "sample": ["121", "131", "80"]
+      },
+      {
+        "name": "P15PRI_COF",
+        "type": "numeric",
+        "sample": ["65", "74", "41"]
+      },
+      {
+        "name": "P15PRI_COM",
+        "type": "numeric",
+        "sample": ["56", "57", "39"]
+      },
+      {
+        "name": "P15SEC_IN",
+        "type": "numeric",
+        "sample": ["28", "20", "29"]
+      },
+      {
+        "name": "P15SEC_INF",
+        "type": "numeric",
+        "sample": ["11", "6", "8"]
+      },
+      {
+        "name": "P15SEC_INM",
+        "type": "numeric",
+        "sample": ["17", "14", "21"]
+      },
+      {
+        "name": "P15SEC_CO",
+        "type": "numeric",
+        "sample": ["365", "448", "183"]
+      },
+      {
+        "name": "P15SEC_COF",
+        "type": "numeric",
+        "sample": ["180", "221", "93"]
+      },
+      {
+        "name": "P15SEC_COM",
+        "type": "numeric",
+        "sample": ["185", "227", "90"]
+      },
+      {
+        "name": "P18YM_PB",
+        "type": "numeric",
+        "sample": ["298", "476", "189"]
+      },
+      {
+        "name": "P18YM_PB_F",
+        "type": "numeric",
+        "sample": ["165", "236", "112"]
+      },
+      {
+        "name": "P18YM_PB_M",
+        "type": "numeric",
+        "sample": ["133", "240", "77"]
+      },
+      {
+        "name": "GRAPROES",
+        "type": "numeric",
+        "sample": ["9.18", "9.64", "8.43"]
+      },
+      {
+        "name": "GRAPROES_F",
+        "type": "numeric",
+        "sample": ["9.42", "9.56", "8.93"]
+      },
+      {
+        "name": "GRAPROES_M",
+        "type": "numeric",
+        "sample": ["8.91", "9.73", "7.94"]
+      },
+      {
+        "name": "PEA",
+        "type": "numeric",
+        "sample": ["533", "602", "328"]
+      },
+      {
+        "name": "PEA_F",
+        "type": "numeric",
+        "sample": ["172", "164", "99"]
+      },
+      {
+        "name": "PEA_M",
+        "type": "numeric",
+        "sample": ["361", "438", "229"]
+      },
+      {
+        "name": "PE_INAC",
+        "type": "numeric",
+        "sample": ["473", "716", "333"]
+      },
+      {
+        "name": "PE_INAC_F",
+        "type": "numeric",
+        "sample": ["350", "507", "231"]
+      },
+      {
+        "name": "PE_INAC_M",
+        "type": "numeric",
+        "sample": ["123", "209", "102"]
+      },
+      {
+        "name": "POCUPADA",
+        "type": "numeric",
+        "sample": ["522", "576", "322"]
+      },
+      {
+        "name": "POCUPADA_F",
+        "type": "numeric",
+        "sample": ["170", "162", "98"]
+      },
+      {
+        "name": "POCUPADA_M",
+        "type": "numeric",
+        "sample": ["352", "414", "224"]
+      },
+      {
+        "name": "PDESOCUP",
+        "type": "numeric",
+        "sample": ["11", "26", "6"]
+      },
+      {
+        "name": "PDESOCUP_F",
+        "type": "numeric",
+        "sample": ["2", "2", "1"]
+      },
+      {
+        "name": "PDESOCUP_M",
+        "type": "numeric",
+        "sample": ["9", "24", "5"]
+      },
+      {
+        "name": "PSINDER",
+        "type": "numeric",
+        "sample": ["131", "14", "80"]
+      },
+      {
+        "name": "PDER_SS",
+        "type": "numeric",
+        "sample": ["1188", "1635", "704"]
+      },
+      {
+        "name": "PDER_IMSS",
+        "type": "numeric",
+        "sample": ["761", "1027", "241"]
+      },
+      {
+        "name": "PDER_ISTE",
+        "type": "numeric",
+        "sample": ["15", "47", "30"]
+      },
+      {
+        "name": "PDER_ISTEE",
+        "type": "numeric",
+        "sample": ["22", "12", "9"]
+      },
+      {
+        "name": "PAFIL_PDOM",
+        "type": "numeric",
+        "sample": ["0", "0", "0"]
+      },
+      {
+        "name": "PDER_SEGP",
+        "type": "numeric",
+        "sample": ["331", "421", "392"]
+      },
+      {
+        "name": "PDER_IMSSB",
+        "type": "numeric",
+        "sample": ["0", "0", "0"]
+      },
+      {
+        "name": "PAFIL_IPRI",
+        "type": "numeric",
+        "sample": ["65", "153", "11"]
+      },
+      {
+        "name": "PAFIL_OTRA",
+        "type": "numeric",
+        "sample": ["1", "2", "24"]
+      },
+      {
+        "name": "P12YM_SOLT",
+        "type": "numeric",
+        "sample": ["305", "427", "164"]
+      },
+      {
+        "name": "P12YM_CASA",
+        "type": "numeric",
+        "sample": ["569", "711", "410"]
+      },
+      {
+        "name": "P12YM_SEPA",
+        "type": "numeric",
+        "sample": ["133", "183", "87"]
+      },
+      {
+        "name": "TOTHOG",
+        "type": "numeric",
+        "sample": ["359", "446", "276"]
+      },
+      {
+        "name": "HOGJEF_F",
+        "type": "numeric",
+        "sample": ["91", "136", "62"]
+      },
+      {
+        "name": "HOGJEF_M",
+        "type": "numeric",
+        "sample": ["268", "310", "214"]
+      },
+      {
+        "name": "POBHOG",
+        "type": "numeric",
+        "sample": ["1320", "1663", "784"]
+      },
+      {
+        "name": "PHOGJEF_F",
+        "type": "numeric",
+        "sample": ["310", "482", "126"]
+      },
+      {
+        "name": "PHOGJEF_M",
+        "type": "numeric",
+        "sample": ["1010", "1181", "658"]
+      },
+      {
+        "name": "VIVTOT",
+        "type": "numeric",
+        "sample": ["543", "656", "524"]
+      },
+      {
+        "name": "TVIVHAB",
+        "type": "numeric",
+        "sample": ["359", "446", "276"]
+      },
+      {
+        "name": "TVIVPAR",
+        "type": "numeric",
+        "sample": ["543", "649", "524"]
+      },
+      {
+        "name": "VIVPAR_HAB",
+        "type": "numeric",
+        "sample": ["359", "439", "276"]
+      },
+      {
+        "name": "VIVPARH_CV",
+        "type": "numeric",
+        "sample": ["356", "446", "275"]
+      },
+      {
+        "name": "TVIVPARHAB",
+        "type": "numeric",
+        "sample": ["359", "446", "276"]
+      },
+      {
+        "name": "VIVPAR_DES",
+        "type": "numeric",
+        "sample": ["116", "135", "127"]
+      },
+      {
+        "name": "VIVPAR_UT",
+        "type": "numeric",
+        "sample": ["68", "75", "121"]
+      },
+      {
+        "name": "OCUPVIVPAR",
+        "type": "numeric",
+        "sample": ["1320", "1663", "784"]
+      },
+      {
+        "name": "PROM_OCUP",
+        "type": "numeric",
+        "sample": ["3.68", "3.73", "2.84"]
+      },
+      {
+        "name": "PRO_OCUP_C",
+        "type": "numeric",
+        "sample": ["1", "0.92", "0.72"]
+      },
+      {
+        "name": "VPH_PISODT",
+        "type": "numeric",
+        "sample": ["350", "445", "275"]
+      },
+      {
+        "name": "VPH_PISOTI",
+        "type": "numeric",
+        "sample": ["6", "0", "0"]
+      },
+      {
+        "name": "VPH_1DOR",
+        "type": "numeric",
+        "sample": ["124", "154", "108"]
+      },
+      {
+        "name": "VPH_2YMASD",
+        "type": "numeric",
+        "sample": ["232", "292", "167"]
+      },
+      {
+        "name": "VPH_1CUART",
+        "type": "numeric",
+        "sample": ["28", "12", "13"]
+      },
+      {
+        "name": "VPH_2CUART",
+        "type": "numeric",
+        "sample": ["49", "55", "36"]
+      },
+      {
+        "name": "VPH_3YMASC",
+        "type": "numeric",
+        "sample": ["279", "378", "226"]
+      },
+      {
+        "name": "VPH_C_ELEC",
+        "type": "numeric",
+        "sample": ["354", "444", "274"]
+      },
+      {
+        "name": "VPH_S_ELEC",
+        "type": "numeric",
+        "sample": ["2", "1", "1"]
+      },
+      {
+        "name": "VPH_AGUADV",
+        "type": "numeric",
+        "sample": ["340", "443", "274"]
+      },
+      {
+        "name": "VPH_AEASP",
+        "type": "numeric",
+        "sample": ["324", "442", "258"]
+      },
+      {
+        "name": "VPH_AGUAFV",
+        "type": "numeric",
+        "sample": ["16", "2", "1"]
+      },
+      {
+        "name": "VPH_TINACO",
+        "type": "numeric",
+        "sample": ["22", "24", "43"]
+      },
+      {
+        "name": "VPH_CISTER",
+        "type": "numeric",
+        "sample": ["3", "0", "3"]
+      },
+      {
+        "name": "VPH_EXCSA",
+        "type": "numeric",
+        "sample": ["345", "440", "269"]
+      },
+      {
+        "name": "VPH_LETR",
+        "type": "numeric",
+        "sample": ["2", "4", "4"]
+      },
+      {
+        "name": "VPH_DRENAJ",
+        "type": "numeric",
+        "sample": ["347", "444", "271"]
+      },
+      {
+        "name": "VPH_NODREN",
+        "type": "numeric",
+        "sample": ["9", "1", "4"]
+      },
+      {
+        "name": "VPH_C_SERV",
+        "type": "numeric",
+        "sample": ["336", "442", "270"]
+      },
+      {
+        "name": "VPH_NDEAED",
+        "type": "numeric",
+        "sample": ["1", "0", "0"]
+      },
+      {
+        "name": "VPH_DSADMA",
+        "type": "numeric",
+        "sample": ["344", "440", "269"]
+      },
+      {
+        "name": "VPH_NDACMM",
+        "type": "numeric",
+        "sample": ["133", "167", "75"]
+      },
+      {
+        "name": "VPH_SNBIEN",
+        "type": "numeric",
+        "sample": ["1", "3", "1"]
+      },
+      {
+        "name": "VPH_REFRI",
+        "type": "numeric",
+        "sample": ["342", "433", "270"]
+      },
+      {
+        "name": "VPH_LAVAD",
+        "type": "numeric",
+        "sample": ["301", "392", "241"]
+      },
+      {
+        "name": "VPH_HMICRO",
+        "type": "numeric",
+        "sample": ["190", "283", "200"]
+      },
+      {
+        "name": "VPH_AUTOM",
+        "type": "numeric",
+        "sample": ["213", "274", "198"]
+      },
+      {
+        "name": "VPH_MOTO",
+        "type": "numeric",
+        "sample": ["20", "25", "11"]
+      },
+      {
+        "name": "VPH_BICI",
+        "type": "numeric",
+        "sample": ["38", "58", "48"]
+      },
+      {
+        "name": "VPH_RADIO",
+        "type": "numeric",
+        "sample": ["261", "328", "156"]
+      },
+      {
+        "name": "VPH_TV",
+        "type": "numeric",
+        "sample": ["340", "431", "262"]
+      },
+      {
+        "name": "VPH_PC",
+        "type": "numeric",
+        "sample": ["104", "135", "77"]
+      },
+      {
+        "name": "VPH_TELEF",
+        "type": "numeric",
+        "sample": ["12", "88", "104"]
+      },
+      {
+        "name": "VPH_CEL",
+        "type": "numeric",
+        "sample": ["341", "408", "242"]
+      },
+      {
+        "name": "VPH_INTER",
+        "type": "numeric",
+        "sample": ["150", "201", "127"]
+      },
+      {
+        "name": "VPH_STVP",
+        "type": "numeric",
+        "sample": ["155", "204", "177"]
+      },
+      {
+        "name": "VPH_SPMVPI",
+        "type": "numeric",
+        "sample": ["59", "67", "20"]
+      },
+      {
+        "name": "VPH_CVJ",
+        "type": "numeric",
+        "sample": ["52", "56", "19"]
+      },
+      {
+        "name": "VPH_SINRTV",
+        "type": "numeric",
+        "sample": ["10", "8", "7"]
+      },
+      {
+        "name": "VPH_SINLTC",
+        "type": "numeric",
+        "sample": ["14", "29", "9"]
+      },
+      {
+        "name": "VPH_SINCIN",
+        "type": "numeric",
+        "sample": ["181", "221", "133"]
+      },
+      {
+        "name": "VPH_SINTIC",
+        "type": "numeric",
+        "sample": ["5", "4", "1"]
+      },
+      {
+        "name": "GRAPROES_NIVEL",
+        "type": "factor",
+        "sample": ["Preparatoria", "Preparatoria", "Secundaria"]
+      }
+    ]
+  }
+}

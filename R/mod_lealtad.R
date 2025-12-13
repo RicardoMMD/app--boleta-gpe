@@ -63,7 +63,7 @@ mod_lealtad_server <- function(id, base_ganadores_pr) {
         filter(!is.na(partido)) %>%
         st_transform(crs = "+proj=longlat +datum=WGS84")
       
-      validate(need(nrow(shp_lealtad) > 0, "No hay datos suficientes para calcular la lealtad."))
+      shiny::validate(need(nrow(shp_lealtad) > 0, "No hay datos suficientes para calcular la lealtad."))
       
       # 5. Paleta de Colores
       niveles_partido <- c("INDEPE", "MC", "morena", "PAN", "PRI", "PT", "PVEM", "VERDE")

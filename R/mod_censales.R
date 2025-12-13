@@ -1,5 +1,5 @@
 # ==============================================================================
-# MÓDULO: Datos Poblacionales (Censales)
+# MÓDULO: Datos Poblacionales (Censales) - REFACTORIZADO
 # ==============================================================================
 
 # 1. UI DEL MÓDULO -------------------------------------------------------------
@@ -11,7 +11,7 @@ mod_censales_ui <- function(id) {
       title = "Datos Poblacionales por Sección", 
       collapsible = TRUE, collapsed = FALSE, 
       width = 12, status = "success", solidHeader = TRUE,
-      p("Seleccione una variable demográfica en el panel de control para visualizar su distribución geográfica en el mapa y explorar los datos detallados en la tabla.")
+      p("Seleccione una variable demográfica en el panel de control para visualizar su distribución geográfica.")
     ),
     
     fluidRow(
@@ -23,11 +23,9 @@ mod_censales_ui <- function(id) {
           
           shiny::selectInput(ns("censo_interes"), 
                              "Elige la variable de interés:", 
-                             choices = chs_censales, # Variable Global
+                             choices = chs_censales, # Asumiendo variable Global
                              selected = chs_censales[1]),
-          
           hr(),
-          
           downloadBttn(
             outputId = ns("dw_censal_csv_censales"), 
             label = "Descargar datos", 
@@ -44,8 +42,11 @@ mod_censales_ui <- function(id) {
           
           tabPanel(
             title = "Mapa de Distribución", icon = icon("map-marked-alt"),
+            # Contenedor con altura relativa para adaptarse mejor
             leafletOutput(ns("mapa_censales"), height = "80vh"),
-            shiny::actionButton(ns("mapFullscreen"), "Pantalla Completa", icon = icon("expand-arrows-alt"))
+            div(style = "position: absolute; bottom: 25px; left: 25px; z-index: 1000;",
+                shiny::actionButton(ns("mapFullscreen"), "Pantalla Completa", icon = icon("expand-arrows-alt"), class = "btn-sm btn-light")
+            )
           ),
           
           tabPanel(
@@ -63,146 +64,173 @@ mod_censales_server <- function(id, secciones_reactivas) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
     
-    # 1. Preparar Datos para Tabla (Formato Largo) -----------------------------
-    query_censales <- reactive({
-      req(input$censo_interes)
-      
-      # data_secc_cpv2020 es Global
-      # Filtramos primero las columnas de interés y luego pivotamos
-      dta_filtrada <- data_secc_cpv2020 %>%
-        select(SECCION, any_of(input$censo_interes)) # Seleccionar solo la necesaria + SECCION
-      
-      # Nota: Para la tabla completa que el usuario quiere ver, 
-      # quizás quiera ver SOLO la variable seleccionada filtrada por las secciones activas
-      
-      secciones_ids <- secciones_reactivas()$SECCION
-      
-      # Retornamos la fila correspondiente a la variable seleccionada
-      # Usamos el dataframe original 'data_secc_cpv2020' completo para pivotar
-      data_secc_cpv2020 %>%
-        filter(SECCION %in% secciones_ids) %>%
-        select(SECCION, Valor = all_of(input$censo_interes)) %>%
-        mutate(Indicador = names(chs_censales)[which(chs_censales == input$censo_interes)]) %>%
-        relocate(Indicador, .before = Valor)
+    # --- Configuración Global ---
+    vars_porcentaje <- c("POBFEM", "POBMAS", "PHOG_IND", "POB_AFRO", 
+                         "PCON_DISC", "POCUPADA", "PDESOCUP")
+    
+    # 1. Preparación de Geometría
+    geo_base <- reactive({
+      req(secciones_reactivas())
+      # Transformamos y aseguramos que SECCION sea caracter
+      secciones_reactivas() %>%
+        mutate(SECCION = as.character(SECCION)) %>%
+        st_transform(crs = 4326)
     })
     
-    # 2. Renderizado del Mapa --------------------------------------------------
-    output$mapa_censales <- renderLeaflet({
-      req(input$censo_interes)
+    # 2. Preparación de Datos (CORREGIDO)
+    datos_mapa_listos <- reactive({
+      req(geo_base(), input$censo_interes)
       
-      # Variables que deben mostrarse como porcentaje del total de población
-      vars_porcentaje <- c("POBFEM", "POBMAS", "PHOG_IND", "POB_AFRO", 
-                           "PCON_DISC", "POCUPADA", "PDESOCUP")
+      shp <- geo_base()
       
-      # Preparar datos: Unir geometría con datos censales (formato ancho)
-      # Convertir SECCION a formato padding (0001) para el join si es necesario, 
-      # o asegurarse que coinciden los tipos (character vs numeric)
-      
-      # data_secc_cpv2020 tiene SECCION como numeric o character, ajustamos:
-      datos_censales_procesados <- data_secc_cpv2020 %>%
-        mutate(SECCION = as.character(SECCION))
-      
-      shp_dta <- secciones_reactivas() %>% 
+      # CORRECCIÓN: Quitamos 'NOMBRE' del select. 
+      # Asumimos que el nombre del municipio ya viene en 'shp' (el shapefile).
+      datos_valores <- data_secc_cpv2020 %>%
         mutate(SECCION = as.character(SECCION)) %>%
-        st_transform(crs = "+proj=longlat +datum=WGS84") %>% 
-        left_join(datos_censales_procesados, by = "SECCION")
+        filter(SECCION %in% shp$SECCION) %>%
+        select(SECCION, POBTOT, any_of("GRAPROES_NIVEL"), 
+               VariableInteres = all_of(input$censo_interes))
       
-      validate(need(nrow(shp_dta) > 0, "No hay datos para mostrar."))
+      # Join: Unimos los datos al mapa
+      shp_joined <- shp %>%
+        left_join(datos_valores, by = "SECCION")
       
-      # Crear etiquetas dinámicas
+      # Cálculos finales
+      shp_joined %>%
+        mutate(
+          POBTOT_safe = ifelse(is.na(POBTOT) | POBTOT == 0, 1, POBTOT),
+          raw_value   = as.numeric(VariableInteres),
+          
+          valor_mapa = case_when(
+            input$censo_interes %in% vars_porcentaje ~ (raw_value / POBTOT_safe) * 100,
+            TRUE ~ raw_value
+          ),
+          valor_mapa = coalesce(valor_mapa, 0), 
+          
+          texto_valor = case_when(
+            input$censo_interes %in% vars_porcentaje ~ paste0(format(round(valor_mapa, 2), nsmall = 2), "%"),
+            TRUE ~ format(round(valor_mapa, 0), big.mark = ",")
+          )
+        )
+    })
+    
+    # 3. Renderizado del Mapa (CORREGIDO Y BLINDADO)
+    output$mapa_censales <- renderLeaflet({
+      # Usamos req() para evitar errores si el reactivo aún no está listo
+      req(datos_mapa_listos())
+      dta <- datos_mapa_listos()
+      
+      # VALIDATE SEGURO: Verificamos explícitamente que no sea NULL y tenga filas
+      if (is.null(dta) || nrow(dta) == 0) {
+        shiny::validate("No hay datos disponibles para la selección actual.")
+      }
+      
+      # Detectar columna de nombre de municipio (Para que no falle el popup)
+      # Busca la primera columna que parezca nombre, si no, usa "Desconocido"
+      posibles_nombres <- c("NOMBRE", "MUNICIPIO", "NOM_MUN", "NOMGEO")
+      col_nombre <- intersect(names(dta), posibles_nombres)[1]
+      
+      if (is.na(col_nombre)) {
+        # Si no encuentra columna de nombre, creamos una dummy
+        dta$nombre_mostrar <- "Municipio" 
+      } else {
+        dta$nombre_mostrar <- dta[[col_nombre]]
+      }
+      
+      # Etiqueta base
       label_base <- names(chs_censales)[which(chs_censales == input$censo_interes)]
       if(length(label_base) == 0) label_base <- input$censo_interes
       
-      # Procesar valores para el mapa
-      shp_dta_map <- shp_dta %>%
-        mutate(
-          raw_value = .data[[input$censo_interes]],
-          
-          # Cálculo del valor a mapear (Porcentaje o Absoluto)
-          valor_mapa = if (input$censo_interes %in% vars_porcentaje) {
-            ifelse(POBTOT > 0, (raw_value / POBTOT) * 100, 0)
-          } else {
-            raw_value
-          },
-          
-          # Formato de texto para el popup
-          texto_valor = if (input$censo_interes %in% vars_porcentaje) {
-            paste0(format(round(valor_mapa, 2), nsmall=2), "%")
-          } else {
-            format(round(valor_mapa, 2), big.mark = ",")
-          },
-          
-          # Línea especial para escolaridad
-          linea_escolaridad = if (input$censo_interes == "GRAPROES") {
-            paste0("<b>Nivel promedio: </b>", GRAPROES_NIVEL, "<br>")
-          } else {
-            ""
-          },
-          
-          popup_html = paste0(
-            "<b>Municipio: </b>", htmlEscape(NOMBRE), "<br>",
-            "<b>Sección: </b>", htmlEscape(SECCION), "<hr style='margin:0.5rem;'>",
-            "<b>Población Total: </b>", format(POBTOT, big.mark = ","), "<br>",
-            linea_escolaridad,
-            "<b>", label_base, ": </b>", texto_valor
-          )
-        )
-      
       # Paleta
-      pal <- colorNumeric(palette = "viridis", domain = shp_dta_map$valor_mapa)
+      pal <- colorNumeric(palette = "viridis", domain = dta$valor_mapa)
+      
+      # Popup seguro
+      txt_escolaridad <- if ("GRAPROES_NIVEL" %in% names(dta)) {
+        paste0("<b>Nivel promedio: </b>", dta$GRAPROES_NIVEL, "<br>")
+      } else { "" }
+      
+      popup_content <- sprintf(
+        "<b>Municipio: </b>%s<br>
+         <b>Sección: </b>%s<hr style='margin:5px 0;'>
+         <b>Población Total: </b>%s<br>
+         %s
+         <b>%s: </b>%s",
+        dta$nombre_mostrar, # Usamos la columna detectada
+        dta$SECCION,
+        format(dta$POBTOT, big.mark = ","),
+        ifelse(input$censo_interes == "GRAPROES", txt_escolaridad, ""),
+        label_base,
+        dta$texto_valor
+      )
       
       titulo_leyenda <- if (input$censo_interes %in% vars_porcentaje) paste0(label_base, " (%)") else label_base
       
-      leaflet() %>% 
-        addProviderTiles(providers$CartoDB.Voyager) %>% 
+      leaflet(dta) %>%
+        addProviderTiles(providers$CartoDB.Positron) %>%
         addPolygons(
-          data = shp_dta_map,
-          color = "#596475",
-          fillColor = ~pal(valor_mapa), 
-          popup = ~popup_html,
-          stroke = TRUE,
+          fillColor = ~pal(valor_mapa),
+          color = "#444444",
+          weight = 1,
+          opacity = 1,
           fillOpacity = 0.7,
-          weight = 1.3,
+          popup = popup_content,
           highlightOptions = highlightOptions(
-            weight = 3, color = "#f72585", fillOpacity = 0.9, bringToFront = TRUE
+            weight = 2, color = "#000", fillOpacity = 0.9, bringToFront = TRUE
           )
         ) %>%
         addLegend(
-          pal = pal, 
-          values = shp_dta_map$valor_mapa, 
-          title = titulo_leyenda, 
-          position = "bottomright"
+          position = "bottomright",
+          pal = pal,
+          values = ~valor_mapa,
+          title = titulo_leyenda
         )
     })
     
-    # 3. Renderizado de Tabla --------------------------------------------------
+    # 4. Tabla de Datos
     output$dt_query_censales <- DT::renderDataTable({
-      datatable(
-        data = query_censales(),
-        style = 'bootstrap5',
-        class = 'header stripe',
-        extensions = c("Scroller", "Buttons"),
-        selection = "single",
-        options = list(
-          searching = TRUE,
-          dom = 'Bfrtip',
-          scrollY = 500,
-          scroller = TRUE,
-          scrollX = TRUE
+      req(datos_mapa_listos())
+      
+      # Detectar columna nombre igual que arriba
+      dta <- datos_mapa_listos()
+      col_nombre <- intersect(names(dta), c("NOMBRE", "MUNICIPIO", "NOM_MUN", "NOMGEO"))[1]
+      col_nombre_final <- if(is.na(col_nombre)) "SECCION" else col_nombre # Fallback
+      
+      dta %>%
+        st_drop_geometry() %>%
+        select(
+          any_of(col_nombre_final), # Selecciona el nombre si existe
+          Sección = SECCION,
+          `Población Total` = POBTOT,
+          Valor = raw_value,
+          `Valor (Mapa)` = valor_mapa
+        ) %>%
+        mutate(Indicador = names(chs_censales)[which(chs_censales == input$censo_interes)]) %>%
+        relocate(Indicador, .before = Valor) %>%
+        DT::datatable(
+          style = 'bootstrap4',
+          class = 'cell-border stripe',
+          extensions = 'Buttons',
+          options = list(dom = 'Bfrtip', buttons = c('excel'), scrollX = TRUE)
         )
-      )
     })
     
-    # 4. Descarga --------------------------------------------------------------
+    # 5. Descarga
     output$dw_censal_csv_censales <- downloadHandler(
       filename = function() { paste0("censales_", Sys.Date(), ".csv") },
-      content = function(file) { write.csv(query_censales(), file, row.names=FALSE) }
+      content = function(file) { 
+        req(datos_mapa_listos())
+        write.csv(st_drop_geometry(datos_mapa_listos()), file, row.names=FALSE) 
+      }
     )
     
-    # 5. Fullscreen ------------------------------------------------------------
+    # 6. Fullscreen
     observeEvent(input$mapFullscreen, {
-      shinyjs::runjs(sprintf("fullscreen('%s')", ns("mapa_censales")))
+      shinyjs::runjs(sprintf(
+        "var map = document.getElementById('%s');
+         if (!document.fullscreenElement) { map.requestFullscreen(); } 
+         else { document.exitFullscreen(); }", 
+        ns("mapa_censales")
+      ))
     })
-    
   })
 }

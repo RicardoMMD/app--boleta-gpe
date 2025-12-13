@@ -174,7 +174,7 @@ mod_colonias_server <- function(id, secciones_reactivas) {
     
     output$grafico_colonia <- renderPlot({
       dta <- votos_colonia()
-      validate(need(nrow(dta) > 0, "No hay datos para esta elección."))
+      shiny::validate(need(nrow(dta) > 0, "No hay datos para esta elección."))
       
       ggplot(dta, aes(x = reorder(partido, -prop), y = prop, fill = partido)) +
         geom_col() +
@@ -193,7 +193,7 @@ mod_colonias_server <- function(id, secciones_reactivas) {
     
     output$grafico_colonia_tiempo <- renderPlot({
       dta <- votos_colonia_tiempo()
-      validate(need(nrow(dta) > 0, "No hay datos históricos para este partido."))
+      shiny::validate(need(nrow(dta) > 0, "No hay datos históricos para este partido."))
       
       # Definir orden cronológico de elecciones
       orden_elecciones <- c("ayunt15", "gob15", "dl15", "fed15",

@@ -91,7 +91,7 @@ mod_gestion_tiempo_server <- function(id, secciones_reactivas, base_ganadores_pr
     output$mapa_visitas_secciones <- renderLeaflet({
       
       base_mapa <- base_visitas_secciones()
-      validate(need(!is.null(base_mapa) && nrow(base_mapa) > 0, "No hay datos para calcular."))
+      shiny::validate(need(!is.null(base_mapa) && nrow(base_mapa) > 0, "No hay datos para calcular."))
       
       # Paleta de colores (Blanco a Rojo según intensidad de horas)
       pal <- colorNumeric(palette = c("white", "red"), domain = base_mapa$tiempoxseccion)

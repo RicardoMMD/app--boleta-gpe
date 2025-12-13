@@ -127,7 +127,7 @@ mod_evolucion_server <- function(id, secciones_reactivas) {
       
       base_mapa_gp <- base_mapa_gp_a()
       
-      validate(
+      shiny::validate(
         need(nrow(base_mapa_gp) > 0, "No hay datos suficientes para calcular la evolución con los filtros actuales.")
       )
       

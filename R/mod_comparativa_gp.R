@@ -105,7 +105,7 @@ mod_comparativa_gp_server <- function(id, secciones_reactivas, rank_por_seccion_
     # 2. Mapa 1: General (Gana/Pierde/Igual) -----------------------------------
     output$mapa_gana_o_pierde <- renderLeaflet({
       dta <- dta_ganadores_perdedores()
-      validate(need(nrow(dta) > 0, "No hay datos para mostrar."))
+      shiny::validate(need(nrow(dta) > 0, "No hay datos para mostrar."))
       
       dta$gana_o_pierde <- factor(dta$gana_o_pierde, levels = c("gana", "pierde", "igual (pierde)", "igual (gana)"))
       pal <- colorFactor(c("#06d6a0","#ef476f", "#e36414", "#219ebc"), domain = dta$gana_o_pierde)
@@ -136,12 +136,12 @@ mod_comparativa_gp_server <- function(id, secciones_reactivas, rank_por_seccion_
     # 3. Mapa 2: Ganadas (¿A quién se le ganó?) --------------------------------
     output$mapa_gana <- renderLeaflet({
       dta <- dta_ganadores_perdedores() %>% filter(gana_o_pierde == "gana")
-      validate(need(nrow(dta) > 0, "No se registraron secciones ganadas (flips) en esta comparativa."))
+      shiny::validate(need(nrow(dta) > 0, "No se registraron secciones ganadas (flips) en esta comparativa."))
       
       # Join espacial
       shp_dta <- secciones_reactivas() %>%
         st_transform(crs = "+proj=longlat +datum=WGS84") %>%
-        inner_join(dta, by = c("SECCION" = "seccion"))
+        left_join(dta, by = c("SECCION" = "seccion"))
       
       # Paleta consistente usando paleta global
       partidos_mapa <- unique(shp_dta$partido_1.x)
@@ -161,11 +161,11 @@ mod_comparativa_gp_server <- function(id, secciones_reactivas, rank_por_seccion_
     # 4. Mapa 3: Perdidas (¿Quién nos ganó?) -----------------------------------
     output$mapa_pierde <- renderLeaflet({
       dta <- dta_ganadores_perdedores() %>% filter(gana_o_pierde == "pierde")
-      validate(need(nrow(dta) > 0, "No se registraron secciones perdidas en esta comparativa."))
+      shiny::validate(need(nrow(dta) > 0, "No se registraron secciones perdidas en esta comparativa."))
       
       shp_dta <- secciones_reactivas() %>%
         st_transform(crs = "+proj=longlat +datum=WGS84") %>%
-        inner_join(dta, by = c("SECCION" = "seccion"))
+        left_join(dta, by = c("SECCION" = "seccion"))
       
       partidos_mapa <- unique(shp_dta$partido_1.y)
       pal <- colorFactor(palette = paleta_partidos, domain = partidos_mapa, na.color = "#808080")

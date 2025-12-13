@@ -344,7 +344,7 @@ mod_data_mza_server <- function(id, secciones_reactivas, inputs_globales) {
         año == input$slid_año_mza
       )
       
-      validate(need(nrow(cant_votos_select) > 0, "No hay datos para esta selección"))
+      shiny::validate(need(nrow(cant_votos_select) > 0, "No hay datos para esta selección"))
       
       cant_votos_group <- cant_votos_select %>% 
         aggregate(votos ~ partido + eleccion + año, FUN = sum) %>% 

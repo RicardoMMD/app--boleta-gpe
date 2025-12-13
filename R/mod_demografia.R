@@ -1,5 +1,5 @@
 # ==============================================================================
-# MÓDULO: Demografía Espacial
+# MÓDULO: Demografía Espacial - REFACTORIZADO
 # ==============================================================================
 
 # 1. UI DEL MÓDULO -------------------------------------------------------------
@@ -8,39 +8,62 @@ mod_demografia_ui <- function(id) {
   
   tagList(
     fluidRow(
+      # --- Panel Lateral de Controles ---
       column(
         width = 3,
         box(
           width = 12,
-          title = "Demografía Espacial por Edad y Género", 
-          collapsible = TRUE, collapsed = TRUE, status = "info",
-          p("Visualice la distribución demográfica en el mapa. Seleccione los grupos de edad y géneros de interés para ver qué secciones tienen mayor concentración de dicha población.")
+          title = "Configuración", 
+          collapsible = TRUE, collapsed = FALSE, status = "primary", solidHeader = TRUE,
+          
+          p("Seleccione los criterios para filtrar la población en el mapa."),
+          
+          shinyWidgets::pickerInput(
+            inputId = ns("edades"),
+            label = "Grupos de edad:",
+            choices =  c("18 a 24" = "_18_24", "25 a 29" = "_25_29", "30 a 39" = "_30_39", 
+                         "40 a 49" = "_40_49", "50 a 59" = "_50_59", "60 y más" = "mayores"),
+            selected = c("_18_24", "_25_29", "_30_39", "_40_49", "_50_59", "mayores"),
+            multiple = TRUE,
+            options = list(`actions-box` = TRUE, `select-all-text` = "Todos", `deselect-all-text` = "Ninguno")
+          ),
+          
+          shinyWidgets::pickerInput(
+            inputId = ns("genero"),
+            label = "Género:",
+            choices =  c("Hombres" = "hombres", "Mujeres" = "mujeres"),
+            selected = c("hombres", "mujeres"),
+            multiple = TRUE
+          ),
+          
+          hr(),
+          
+          downloadBttn(
+            outputId = ns("download_edades"), 
+            label = "Descargar Datos", 
+            style = "simple", color = "success", size = "sm", block = TRUE, icon = icon("download")
+          )
         ),
-        box(
-          width = 12,
-          # Inputs con Namespace
-          shiny::selectInput(ns("edades"),
-                             "Seleccione grupos de edad:",
-                             choices =  c("18 a 24" = "_18_24", "25 a 29" = "_25_29", "30 a 39" = "_30_39", 
-                                          "40 a 49" = "_40_49", "50 a 59" = "_50_59", "Mayores" = "mayores"),
-                             selected = c("_18_24", "_25_29", "_30_39", "_40_49", "_50_59", "mayores"),
-                             multiple = TRUE),
-          shiny::selectInput(ns("genero"),
-                             "Seleccione géneros:",
-                             choices =  c("Hombre" = "hombres", "Mujer" = "mujeres"),
-                             selected = c("hombres", "mujeres"),
-                             multiple = TRUE)
-        )
+        
+        # Caja de información resumen (Opcional, para dar contexto)
+        valueBoxOutput(ns("vbox_poblacion_sel"), width = 12)
       ),
+      
+      # --- Área del Mapa ---
       column(
         width = 9,
         box(
-          width = 12,
-          leafletOutput(ns("mapa_generos_edad"), height = "80vh"),
+          width = 12, title = "Distribución Geográfica", status = "info", solidHeader = TRUE,
           
-          div(style = "margin-top: 10px; display: flex; justify-content: space-between;",
-              shiny::actionButton(ns("mapGenerosEdadFullscreen"), "Pantalla Completa", icon = icon("expand")),
-              downloadButton(ns("download_edades"), "Descargar Información (CSV)")
+          # Contenedor relativo para posicionar el botón de fullscreen
+          div(style = "position: relative;",
+              leafletOutput(ns("mapa_generos_edad"), height = "80vh"),
+              
+              # Botón flotante para fullscreen
+              div(style = "position: absolute; top: 10px; right: 10px; z-index: 1000;",
+                  actionButton(ns("mapGenerosEdadFullscreen"), label = NULL, icon = icon("expand"), 
+                               style = "background: white; border: none; box-shadow: 0 0 5px rgba(0,0,0,0.3);")
+              )
           )
         )
       )
@@ -53,87 +76,167 @@ mod_demografia_server <- function(id, secciones_reactivas) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
     
-    # 1. Procesamiento de Datos ------------------------------------------------
-    base_mapa_edad <- reactive({
-      req(input$edades, input$genero)
+    # 1. Preparación de Geometría (Optimización)
+    geo_base <- reactive({
+      req(secciones_reactivas())
+      shp <- secciones_reactivas()
       
-      # Crear patrones regex para filtrar columnas
-      pattern_edades <- stringr::str_c(input$edades, collapse = "|") 
-      pattern_genero <- stringr::str_c(input$genero, collapse = "|") 
+      # Detección segura de columnas
+      cols <- names(shp)
+      col_sec <- intersect(cols, c("SECCION", "Seccion", "CLAVE", "ID"))[1]
       
-      # Nota: 'edades' debe estar disponible en el entorno global (cargado en global.R)
-      base_edad <- edades %>% 
-        pivot_longer(cols = hombres_18_24:mujeres_mayores, names_to = "categoria", values_to = "cantidad") %>% 
-        filter(
-          stringr::str_detect(categoria, pattern_edades),
-          stringr::str_detect(categoria, pattern_genero)
-        ) %>% 
-        group_by(seccion)  %>% 
-        summarise(
-          cantidad = sum(cantidad, na.rm = TRUE), 
-          total = mean(padron_total, na.rm = TRUE) # Asumimos que padron_total es constante por sección
-        ) %>% 
-        mutate(prop = cantidad/total)
-      
-      # Unir con geometría
-      secciones_reactivas() %>% 
-        left_join(base_edad, by = c("SECCION" = "seccion")) %>% 
-        filter(!is.na(SECCION)) %>% 
-        st_transform(crs = "+proj=longlat +datum=WGS84")
+      if (!is.na(col_sec)) {
+        shp %>%
+          transmute(SECCION_JOIN = as.character(.data[[col_sec]]))
+      } else {
+        NULL
+      }
     })
     
-    # 2. Renderizado del Mapa --------------------------------------------------
+    # 2. Cálculo de Datos Demográficos
+    datos_calculados <- reactive({
+      # Validamos que existan los inputs antes de procesar
+      req(input$edades, input$genero)
+      
+      # Validamos que el dataset global 'edades' exista
+      if (!exists("edades")) return(NULL)
+      
+      # Patrones regex
+      pattern_edades <- paste(input$edades, collapse = "|") 
+      pattern_genero <- paste(input$genero, collapse = "|") 
+      
+      # Procesamiento seguro
+      tryCatch({
+        edades %>% 
+          pivot_longer(
+            cols = any_of(matches("hombres|mujeres")), 
+            names_to = "categoria", 
+            values_to = "cantidad"
+          ) %>% 
+          filter(
+            stringr::str_detect(categoria, pattern_edades),
+            stringr::str_detect(categoria, pattern_genero)
+          ) %>% 
+          group_by(seccion)  %>% 
+          summarise(
+            pob_seleccionada = sum(cantidad, na.rm = TRUE), 
+            padron_total = mean(padron_total, na.rm = TRUE), 
+            .groups = "drop"
+          ) %>% 
+          mutate(
+            prop = if_else(padron_total > 0, pob_seleccionada / padron_total, 0),
+            seccion = as.character(seccion)
+          )
+      }, error = function(e) {
+        return(NULL) # Si falla el cálculo, retornamos NULL limpio
+      })
+    })
+    
+    # 3. Join Final
+    mapa_final_data <- reactive({
+      req(geo_base(), datos_calculados())
+      
+      geo <- geo_base()
+      dta <- datos_calculados()
+      
+      # Verificación extra
+      if(is.null(dta) || nrow(dta) == 0) return(NULL)
+      
+      left_join(geo, dta, by = c("SECCION_JOIN" = "seccion"))
+    })
+    
+    # 4. Renderizado del Mapa 
     output$mapa_generos_edad <- renderLeaflet({
       
-      mapa_data <- base_mapa_edad()
+      # Paso 1: Obtener datos
+      dta <- mapa_final_data()
       
-      validate(
-        need(nrow(mapa_data) > 0, "No hay datos para la selección actual.")
+      # Paso 2: Validación BLINDADA
+      # Primero verificamos si es NULL explícitamente
+      if (is.null(dta)) {
+        shiny::validate("Esperando datos...")
+      }
+      
+      # Luego verificamos si tiene filas (nrow devuelve un número, no NULL)
+      if (nrow(dta) == 0) {
+        shiny::validate("No hay población que coincida con estos criterios en la zona seleccionada.")
+      }
+      
+      # Paso 3: Renderizado
+      pal <- colorNumeric(palette = "plasma", domain = dta$prop, na.color = "transparent")
+      
+      # Popup seguro
+      popup_content <- sprintf(
+        "<b>Sección: </b>%s<br/>
+         <hr style='margin:3px 0;'>
+         <b>Población Seleccionada: </b>%s<br/>
+         <b>Total Padrón: </b>%s<br/>
+         <b>Concentración: </b>%s",
+        dta$SECCION_JOIN,
+        scales::comma(dta$pob_seleccionada),
+        scales::comma(dta$padron_total),
+        scales::percent(dta$prop, 0.1)
       )
       
-      # Paleta numérica (Naranja a Azul)
-      pal <- colorNumeric(c("orange", "blue"), domain = mapa_data$prop, na.color = "#ccc")
-      
-      popup_html <- paste0(
-        "<b>Sección: </b>", mapa_data$SECCION, "<br/>", 
-        "<b>Población seleccionada: </b>", scales::comma(mapa_data$cantidad), "<br/>",
-        "<b>Proporción del padrón: </b>", scales::percent(mapa_data$prop, 0.1)
-      )
-      
-      leaflet() %>% 
-        addProviderTiles(providers$CartoDB.Voyager) %>% 
-        addLegend(pal = pal, values = mapa_data$prop, title = "Proporción", position = "bottomright") %>% 
+      leaflet(dta) %>% 
+        addProviderTiles(providers$CartoDB.Positron) %>% 
         addPolygons(
-          data = mapa_data, 
-          color = "#596475", 
-          fillColor = ~pal(prop), 
-          popup = popup_html, 
-          stroke = TRUE, 
-          fillOpacity = 0.7, 
-          weight = 1.3,
+          color = "#444444", 
+          weight = 1,
+          smoothFactor = 0.5,
+          opacity = 1.0,
+          fillOpacity = 0.7,
+          fillColor = ~pal(prop),
+          popup = popup_content, 
           highlightOptions = highlightOptions(
-            weight = 4,
-            color = "#f72585",
-            fillOpacity = 0.9,
-            bringToFront = TRUE
+            weight = 2, color = "cyan", fillOpacity = 0.9, bringToFront = TRUE
           )
+        ) %>%
+        addLegend(
+          pal = pal, 
+          values = dta$prop, 
+          title = "Concentración (%)", 
+          position = "bottomright",
+          labFormat = labelFormat(suffix = "%", transform = function(x) 100 * x)
         )
     })
     
-    # 3. Descarga --------------------------------------------------------------
+    # 5. ValueBox
+    output$vbox_poblacion_sel <- renderValueBox({
+      # Usamos tryCatch para evitar errores rojos si dta es NULL momentáneamente
+      tryCatch({
+        req(datos_calculados())
+        dta <- datos_calculados()
+        if(nrow(dta) == 0) return(NULL)
+        
+        total_sel <- sum(dta$pob_seleccionada, na.rm = TRUE)
+        
+        valueBox(
+          value = scales::comma(total_sel),
+          subtitle = "Población total seleccionada",
+          icon = icon("users"),
+          color = "purple"
+        )
+      }, error = function(e) return(NULL))
+    })
+    
+    # 6. Descarga
     output$download_edades <- downloadHandler(
-      filename = function() {
-        paste("demografia_edad_genero-", Sys.Date(), ".csv", sep="")
-      },
+      filename = function() { paste("demografia_edad_genero_", Sys.Date(), ".csv", sep="") },
       content = function(file) {
-        write.csv(st_drop_geometry(base_mapa_edad()), file)
+        req(mapa_final_data())
+        write.csv(st_drop_geometry(mapa_final_data()), file, row.names = FALSE)
       }
     )
     
-    # 4. Fullscreen ------------------------------------------------------------
+    # 7. Fullscreen
     observeEvent(input$mapGenerosEdadFullscreen, {
-      shinyjs::runjs(sprintf("fullscreenGenerosEdad('%s')", ns("mapa_generos_edad")))
+      shinyjs::runjs(sprintf(
+        "var map = document.getElementById('%s');
+         if (!document.fullscreenElement) { map.requestFullscreen(); } 
+         else { document.exitFullscreen(); }", 
+        ns("mapa_generos_edad")
+      ))
     })
-    
   })
 }

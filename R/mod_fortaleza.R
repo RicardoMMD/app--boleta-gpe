@@ -96,7 +96,7 @@ mod_fortaleza_server <- function(id, secciones_reactivas) {
       
       base_mapa <- base_modelo()
       
-      validate(need(nrow(base_mapa) > 0, "No hay datos suficientes para generar el modelo."))
+      shiny::validate(need(nrow(base_mapa) > 0, "No hay datos suficientes para generar el modelo."))
       
       # Etiquetas descriptivas para los grupos
       base_mapa <- base_mapa %>% 

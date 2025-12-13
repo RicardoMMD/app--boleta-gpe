@@ -145,7 +145,7 @@ mod_sombra_server <- function(id, secciones_reactivas, rank_por_seccion_eleccion
           )
         )
       
-      validate(
+      shiny::validate(
         need(nrow(shp_base_mapa) > 0, 
              "No hay datos para esta selección con los filtros geográficos actuales.")
       )

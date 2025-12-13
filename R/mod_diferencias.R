@@ -97,7 +97,7 @@ mod_diferencias_server <- function(id, secciones_reactivas) {
         st_transform(crs = "+proj=longlat +datum=WGS84") %>% 
         filter(!is.na(partido))
       
-      validate(
+      shiny::validate(
         need(nrow(shp_base) > 0, "No hay datos disponibles para esta selección.")
       )
       
@@ -113,10 +113,7 @@ mod_diferencias_server <- function(id, secciones_reactivas) {
         pmin(x, threshold) # Simplificación visual
       }
       
-      # Calcular opacidad basada en la competitividad (margen de victoria)
-      # Nota: Hay un pequeño bug lógico en el código original con apply_opacity_threshold
-      # que normalizaba raro. Usaré una lógica segura aquí:
-      # A mayor diferencia, mayor opacidad (más seguro el triunfo)
+
       shp_base$opacidad <- rescale_opacity(shp_base$diff, min_opacity = 0.4, max_opacity = 0.9)
       
       # Paleta de colores
